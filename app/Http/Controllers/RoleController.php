@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Role;
 
 class RoleController extends Controller
 {
@@ -40,17 +41,18 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming request data
-        $request->validate([
-            'name' => 'required|string|max:255',
+        // Validate the request data
+        $request ->validate([
+            'name' => 'required|unique:roles|max:255',
+            // Add any other validation rules you need
         ]);
 
-        // Create a new role with the validated data
-        Role::create($request->all());
+        $role = new Role();
+        $role->name = $request->input('name');
+        $role->save();
 
-        // Redirect to the index page with a success message
-        return redirect()->route('roles.index')
-            ->with('success', 'Role created successfully.');
+        // Redirect to the roles index page or do something else
+        return redirect()->route('roles.index')->with('success', 'Role created successfully!');
     }
 
     /**
@@ -91,8 +93,9 @@ class RoleController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        // Update the role with the validated data
-        $role->update($request->all());
+        $role->name = $request->input('name');
+        $role->updated_at = now();
+        $role->save();
 
         // Redirect to the index page with a success message
         return redirect()->route('roles.index')

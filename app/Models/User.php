@@ -15,8 +15,14 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->hasMany(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
+    
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -26,6 +32,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'department_id'
     ];
 
     /**

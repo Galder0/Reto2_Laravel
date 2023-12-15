@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Module extends Model
 {
     use HasFactory;
+
+    public function cycles() {
+        return $this->belongsToMany(Cycle::class);
+    }
 }

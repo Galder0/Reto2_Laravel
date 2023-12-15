@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('cycle_module', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('cycle_id');
+            $table->unsignedBigInteger('module_id');
             $table->timestamps();
+
+            $table->foreign('cycle_id')->references('id')->on('cycles')->onDelete('cascade');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
         });
     }
 

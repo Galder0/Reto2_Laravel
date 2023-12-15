@@ -12,7 +12,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $departments = Department::all();
+        return view('departments.index', compact('departments'));
     }
 
     /**
@@ -20,7 +21,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('departments.create');
     }
 
     /**
@@ -28,7 +29,16 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:departments|max:255',
+            // Add any other validation rules you need
+        ]);
+
+        $department = new Department();
+        $department->name = $request->input('name');
+        $department->save();
+
+        return redirect()->route('departments.index')->with('success', 'Department created successfully!');
     }
 
     /**
@@ -36,7 +46,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        //
+        return view('departments.show', compact('department'));
     }
 
     /**
@@ -44,7 +54,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        return view('departments.edit', compact('department'));
     }
 
     /**
@@ -52,7 +62,17 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            // Add any other validation rules you need
+        ]);
+
+        $department->name = $request->input('name');
+        $department->updated_at = now();
+        $department->save();
+
+
+        return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
     }
 
     /**
@@ -60,6 +80,8 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        $department->delete();
+
+        return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
     }
 }
