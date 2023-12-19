@@ -15,7 +15,7 @@
             <table class="table mt-3">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Code</th>
                         <th>Actions</th>
@@ -28,6 +28,11 @@
                             <td>{{ $cycle->name }}</td>
                             <td>{{ $cycle->code}}</td>
                             <td>
+                                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#cycleCollapse{{ $cycle->id }}" aria-expanded="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>
+                                </button>
                                 <a href="{{ route('cycles.show', $cycle) }}" class="btn btn-info">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -75,6 +80,50 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- Collapsible List for Each Cycle -->
+                            <tr>
+                            <td colspan="4">
+                                <div class="collapse" id="cycleCollapse{{ $cycle->id }}">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        @php
+                                            $totalHours = 0;
+                                        @endphp
+                                        @forelse($cycle->modules as $module)
+                                            <li>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                                        Module: {{ $module->name }}
+                                                    </span>
+                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                                        Hours: {{ $module->numberhours }} h
+                                                    </span>
+                                                </div>
+                                                @php
+                                                    $totalHours += $module->numberhours;
+                                                @endphp
+                                            </li>
+                                        @empty
+                                            <li><p>No modules for this cycle.</p></li>
+                                        @endforelse
+
+                                        @if($totalHours > 0)
+                                            <li><hr></li> <!-- Line separator -->
+                                            <li>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                                        Total Time:
+                                                    </span>
+                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                                        {{ $totalHours }} h
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </td>
+                            </tr>
                     @endforeach
                 </tbody>
             </table>

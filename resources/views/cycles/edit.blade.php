@@ -35,6 +35,16 @@
             </div>
 
             <div class="form-group">
+                <label>Modules:</label>
+                @foreach ($modules as $module)
+                    <div class="form-check">
+                        <input type="checkbox" name="modules[]" value="{{ $module->id }}" {{ in_array($module->id, $cycle->modules->pluck('id')->toArray()) ? 'checked' : '' }}>
+                        <label class="form-check-label">{{ $module->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary">Update Cycle</button>
                 <a href="{{ route('cycles.index') }}" class="btn btn-secondary">Cancel</a>
             </div>

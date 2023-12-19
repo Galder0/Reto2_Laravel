@@ -15,12 +15,15 @@
 
             <div class="form-group">
                 <label for="name">Cycle Name:</label>
-                <input type="text" name="name" id="name" class="form-control" required>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
+                @error('name')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="code">Cycle Code:</label>
-                <input type="text" name="code" id="code" class="form-control" value="{{ old('code') }}" required maxlength="4">
+                <input type="text" name="code" id="code" class="form-control" value="{{ old('code') }}" required minlength="4" maxlength="4">
             </div>
 
             <!-- Add other form fields as needed -->
