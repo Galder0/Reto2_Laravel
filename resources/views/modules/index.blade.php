@@ -15,7 +15,7 @@
             <table class="table mt-3">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Code</th>
                         <th>Hours</th>

@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="code">Module Number of Hours:</label>
-                <input type="text" name="numberhours" id="numberhours" class="form-control" required maxlength="3">
+                <input type="text" name="numberhours" id="numberhours" class="form-control" required minlenght="1" maxlength="3">
             </div>
 
             <!-- Add other form fields as needed -->
