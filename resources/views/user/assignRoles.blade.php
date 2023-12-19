@@ -9,14 +9,13 @@
         @csrf
 
         <div class="form-group">
-            <label for="roles">Select Roles</label>
-            <select name="roles[]" id="roles" class="form-control" multiple required>
-                @foreach ($roles as $role)
-                    <option value="{{ $role->id }}" {{ in_array($role->id, $userRoles) ? 'selected' : '' }}>
-                        {{ $role->name }}
-                    </option>
-                @endforeach
-            </select>
+            <h1><label>Select Roles</label></h1>
+            @foreach ($roles as $role)
+                <div class="form-check">
+                    <input type="checkbox" name="roles[]" id="role_{{ $role->id }}" value="{{ $role->id }}" {{ $user->roles->contains($role) ? 'checked' : '' }}>
+                    <label for="role_{{ $role->id }}">{{ $role->name }}</label>
+                </div>
+            @endforeach
         </div>
 
         <button type="submit" class="btn btn-primary">Assign Roles</button>
