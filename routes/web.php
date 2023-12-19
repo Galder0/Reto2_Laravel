@@ -92,5 +92,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/users/{user}/assign-roles', [UserController::class, 'assignRolesForm'])->name('users.assignRolesForm');
 Route::post('/users/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('users.assignRoles');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+
+
+
 
 
