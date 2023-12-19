@@ -32,7 +32,7 @@ class ModuleController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'name' => 'required|unique:modules|max:255',
+            'name' => 'required|max:255',
             'code' => 'required|unique:modules',
             'numberhours' => 'required',
         ]);
@@ -72,19 +72,14 @@ class ModuleController extends Controller
             'name' => 'required|string|max:255',
             'code' => 'required|integer',
         ]);
-    
-        // Check if the updated name is unique, excluding the current cycle's ID
-        $isUniqueName = Model::where('name', $request->input('name'))
-            ->where('id', '!=', $module->id)
-            ->doesntExist();
-    
+
         // Check if the updated code is unique, excluding the current cycle's ID
         $isUniqueCode = Model::where('code', $request->input('code'))
             ->where('id', '!=', $module->id)
             ->doesntExist();
     
         // If either the name or the code is not unique, redirect back with an error message
-        if (!$isUniqueName || !$isUniqueCode) {
+        if (!$isUniqueCode) {
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['name' => 'The name or code already exists. Please choose a unique value.']);

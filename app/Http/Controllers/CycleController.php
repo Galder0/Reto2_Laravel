@@ -5,10 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cycle;
+use App\Models\Module;
+use Illuminate\Support\Facades\DB;
 
 
 class CycleController extends Controller
 {
+    public function assignModulesForm(Cycle $cycle)
+    {
+        $modules = Module::all();
+        $cyclesModules = $cycle->modules;
+
+        return view('cycles.assignModules', compact('cycle', 'modules', 'cyclesModules'));
+    }
+
+    public function assignModules(Request $request, Cycle $cycle)
+    {
+        $request->validate([
+            'modules' => 'required|array',
+        ]);
+
+        DB::transaction(function () use ($request, $cycle) {
+            // Sync modules for the cycle
+            $cycle->modules()->sync($request->input('modules'));
+        });
+
+        return redirect('/cycles')->with('success', 'Modules assigned successfully.');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,21 +61,33 @@ class CycleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        // Validate the request data
-        $request->validate([
-            'name' => 'required|unique:cycles|max:255',
-            'code' => 'required|digits:4|unique:cycles',
-        ]);
+    public function store(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'name' => 'required|string|max:255|unique:cycles',
+        'code' => 'required|digits:4|unique:cycles',
+    ]);
 
-        $cycle = new Cycle();
-        $cycle->name = $request->input('name');
-        $cycle->code = $request->input('code');
-        $cycle->save();
-
-        // Redirect to the cycles index page or do something else
-        return redirect()->route('cycles.index')->with('success', 'Cycle created successfully!');
+    // Check uniqueness separately for 'name'
+    if (Cycle::where('name', $request->input('name'))->exists()) {
+        return redirect()->route('cycles.create')->with('error', 'Cycle name must be unique.');
     }
+
+    // Check uniqueness separately for 'code'
+    if (Cycle::where('code', $request->input('code'))->exists()) {
+        return redirect()->route('cycles.create')->with('error', 'Cycle code must be unique.');
+    }
+
+    // Create a new Cycle instance and save
+    $cycle = new Cycle();
+    $cycle->name = $request->input('name');
+    $cycle->code = $request->input('code');
+    $cycle->save();
+
+    // Redirect to the cycles index page or do something else
+    return redirect()->route('cycles.index')->with('success', 'Cycle created successfully!');
+}
 
     /**
      * Display the specified resource.
@@ -61,7 +96,10 @@ class CycleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Cycle $cycle) {
-        return view('cycles.show', compact('cycle'));
+        $modules = Module::all();
+        $cycleModules = $cycle->modules;
+
+        return view('cycles.show', compact('cycle', 'modules', 'cycleModules'));
     }
 
     /**
@@ -71,7 +109,11 @@ class CycleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Cycle $cycle) {
-        return view('cycles.edit', compact('cycle'));
+
+        $modules = Module::all();
+        $cycleModules = $cycle->modules;
+
+        return view('cycles.edit', compact('cycle', 'modules', 'cycleModules'));
     }
 
     /**
@@ -81,40 +123,30 @@ class CycleController extends Controller
      * @param  \App\Models\Cycle  $cycle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cycle $cycle) {
-        // Validate the incoming request data
+
+// ...
+
+    public function update(Request $request, Cycle $cycle)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|integer',
+            'code' => 'required|string|max:4|unique:cycles,code,' . $cycle->id,
+            'modules' => 'array', // Assuming modules is an array
         ]);
-    
-        // Check if the updated name is unique, excluding the current cycle's ID
-        $isUniqueName = Cycle::where('name', $request->input('name'))
-            ->where('id', '!=', $cycle->id)
-            ->doesntExist();
-    
-        // Check if the updated code is unique, excluding the current cycle's ID
-        $isUniqueCode = Cycle::where('code', $request->input('code'))
-            ->where('id', '!=', $cycle->id)
-            ->doesntExist();
-    
-        // If either the name or the code is not unique, redirect back with an error message
-        if (!$isUniqueName || !$isUniqueCode) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['name' => 'The name or code already exists. Please choose a unique value.']);
-        }
-    
-        // Update the cycle with the validated data
-        $cycle->name = $request->input('name');
-        $cycle->code = $request->input('code');
-        $cycle->updated_at = now();
-        $cycle->save();
-    
-        // Redirect to the index page with a success message
-        return redirect()->route('cycles.index')
-            ->with('success', 'Cycle updated successfully.');
+
+        DB::transaction(function () use ($request, $cycle) {
+            $cycle->update([
+                'name' => $request->input('name'),
+                'code' => $request->input('code'),
+            ]);
+
+            // Sync modules for the cycle
+            $cycle->modules()->sync($request->input('modules'));
+        });
+
+        return redirect()->route('cycles.index')->with('success', 'Cycle updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -123,10 +155,14 @@ class CycleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Cycle $cycle) {
-        $cycle->delete();
-
+        DB::transaction(function () use ($cycle) {
+            // Detach modules before deleting the cycle
+            $cycle->modules()->detach();
+            // Delete the cycle
+            $cycle->delete();
+        });
         // Redirect to the index page with a success message
-        return redirect()->route('cycles.index')
-            ->with('success', 'Cycle deleted successfully.');
-    }
+        $cycles = Cycle::paginate(20);
+        return view('cycles.index', compact('cycles'));
+    } 
 }

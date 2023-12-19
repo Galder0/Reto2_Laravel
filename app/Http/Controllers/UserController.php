@@ -12,13 +12,13 @@ class UserController extends Controller
     public function assignRolesForm(User $user)
     {
         $roles = Role::all();
-        $usersRoles = $user->roles; //->pluck('id')->toArray();
+        $usersRoles = $user->roles;
 
         return view('users.assignRoles', compact('user', 'roles', 'usersRoles'));
     }
 
     public function assignRoles(Request $request, User $user)
-{
+    {
     $request->validate([
         'roles' => 'required|array',
     ]);
@@ -30,7 +30,7 @@ class UserController extends Controller
 
     return redirect('/admin')->with('success', 'Roles assigned successfully.');
 
-}
+    }
 
     public function destroy(User $user)
     {
