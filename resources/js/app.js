@@ -1,3 +1,2 @@
 import './bootstrap';
-//import './toggleSidebar';
-
+import './theme-switcher';

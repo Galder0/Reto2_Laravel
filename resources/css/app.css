@@ -1,3 +1,20 @@
+/* Estilos condicionales basados en la clase dark */
+.dark\:bg-dots-lighter {
+    background-image: url("data:image/svg+xml,...");
+}
+
+.dark\:bg-gray-900 {
+    background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
+/* Transiciones suaves */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Estilos globales */
 #admin body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -12,8 +29,7 @@
     box-sizing: border-box;
 }
 
-/* Add your own styles as needed */
-
+/* Estilos específicos para el contenido */
 #content ul {
     list-style: none;
     padding: 0;
@@ -74,9 +90,29 @@
     border: 1px solid #dee2e6;
 }
 
-/* Responsive styles */
+#btnSwitch {
+    background: linear-gradient(135deg, #0092A5, #36A9E1);
+    color: #fff;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: background 0.3s ease;
+}
+
+#btnSwitch:hover {
+    background: linear-gradient(135deg, #00788e, #30799d);
+}
+
+/* Estilos para el modo oscuro */
+[data-bs-theme='dark'] #btnSwitch {
+    background: linear-gradient(135deg, #29235C, #36A9E1);
+}
+
+[data-bs-theme='dark'] #btnSwitch:hover {
+    background: linear-gradient(135deg, #1D3568, #36A9E1);
+}
+
+/* Estilos responsivos */
 @media (max-width: 768px) {
-    
     .navbar {
         display: none;
     }
@@ -103,8 +139,7 @@
     }
 
     .pagination .btn {
-        flex-basis: 45%; /* Ajusta el tamaño de acuerdo a tus necesidades */
+        flex-basis: 45%; /* Ajusta el tamaño según tus necesidades */
         margin: 5px;
     }
-    
 }
