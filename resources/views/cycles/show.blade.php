@@ -14,10 +14,7 @@
                 @foreach ($modules as $module)
                     <div class="form-check">
                         <h5><strong>{{ $module->name }}</strong></h5>
-                        <ul>
-                            <li>{{ $module->numberhours }}</li>
-                            <li>{{ $module->numberhours }}</li>
-                        </ul>           
+                        <lablel>Hours: </label>{{ $module->numberhours }}        
                     </div>
                 @endforeach
             </div>
