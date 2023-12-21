@@ -8,11 +8,15 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <!-- Incluye la última versión de Bootstrap desde CDN -->
+    <!-- Include the latest version of Bootstrap from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.3/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
 </head>
 
-<body>
+<body style="display: none;" class="preload">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
@@ -116,7 +120,7 @@
                     <hr>
                     <h2 class="offcanvas-title">Admin Links</h2>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
+                        <a class="nav-link" href="/admin"><i class="bi bi-house-fill"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/roles">Roles</a>
@@ -141,7 +145,7 @@
                     <div class="position-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin">Admin</a>
+                                <a class="nav-link" href="/admin"><i class="bi bi-house-fill"></i> Dashboard</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/roles">Roles</a>
@@ -167,35 +171,26 @@
                 
             </div>
             <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-            <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="btnSwitch"
-                type="button" data-bs-toggle="dropdown" aria-label="Toggle theme (dark)">
-                <!-- Logo para el tema claro -->
-                <img id="lightLogo" src="{{ asset('images/light-mode-logo.svg') }}" alt="{{ config('light-mode', 'light-mode') }}" height="30" class="logo">
-                <!-- Logo para el tema oscuro -->
-                <img id="darkLogo" src="{{ asset('images/dark-mode-logo.svg') }}" alt="{{ config('dark-mode', 'dark-mode') }}" height="30" class="logo">
-                <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-            </button>
-            <!-- Menú desplegable para cambiar el tema -->
-            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-                <li>
-                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
-                        <img id="lightLogo" src="{{ asset('images/light-mode-logo.svg') }}" alt="{{ config('light-mode', 'light-mode') }}" height="30" class="logo me-2">
-                        Light
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
-                        <img id="darkLogo" src="{{ asset('images/dark-mode-logo.svg') }}" alt="{{ config('dark-mode', 'dark-mode') }}" height="30" class="logo me-2">
-                        Dark
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="system">
-                        <img id="systemLogo" src="{{ asset('images/dark-mode-logo.svg') }}" alt="{{ config('system-mode', 'system-mode') }}" height="30" class="logo me-2">
-                        System
-                    </button>
-                </li>
-            </ul>
+                <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="btnSwitch"
+                    type="button" data-bs-toggle="dropdown" aria-label="Toggle theme (dark)">
+                    <i class="bi bi-circle-half"></i>
+                </button>
+                <!-- Menú desplegable para cambiar el tema -->
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                        <i class="bi bi-sun-fill"></i>
+                            Light
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                        <i class="bi bi-moon-stars-fill"></i>
+                            Dark
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </body>
