@@ -1,6 +1,3 @@
-
-<!-- resources/views/roles/edit.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
