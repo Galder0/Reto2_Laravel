@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('code')->unique();
             $table->integer('numberhours');
+            $table->integer('year');
             $table->timestamps();
         });
     }
