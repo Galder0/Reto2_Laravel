@@ -10,14 +10,19 @@
 
         <!-- Add more details as needed -->
         <div class="form-group">
-                <h2>Modules:</h2>
-                @foreach ($modules as $module)
-                    <div class="form-check">
-                        <h5><strong>{{ $module->name }}</strong></h5>
-                        <lablel>Hours: </label>{{ $module->numberhours }}        
-                    </div>
-                @endforeach
-            </div>
+            <h2>Modules:</h2>
+            @foreach ($cycle->modules->sortBy('year') as $module)
+                <div class="form-check">
+                    <h5>
+                        <a href="{{ route('modules.show', $module) }}" class="text-decoration-none">
+                            {{ $module->name }}
+                        </a>
+                    </h5>
+                    <label>Hours: </label>{{ $module->numberhours }}
+                    <label>Year: </label>{{ $module->year }}        
+                </div>
+            @endforeach
+        </div>
         <br> <br>
         <a href="{{ route('cycles.index') }}" class="btn btn-secondary">Back to Cycle</a>
         <a href="{{ route('cycles.edit', $cycle) }}" class="btn btn-warning">Edit Cycle</a>

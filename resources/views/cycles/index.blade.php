@@ -82,7 +82,7 @@
                         </tr>
 
                         <!-- Collapsible List for Each Cycle -->
-                            <tr>
+                        <tr>
                             <td colspan="4">
                                 <div class="collapse" id="cycleCollapse{{ $cycle->id }}">
                                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -92,9 +92,9 @@
                                         @forelse($cycle->modules as $module)
                                             <li>
                                                 <div class="d-flex justify-content-between">
-                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                                    <a href="{{ route('modules.show', $module) }}" class="link-body-emphasis d-inline-flex rounded">
                                                         Module: {{ $module->name }}
-                                                    </span>
+                                                    </a>
                                                     <span class="link-body-emphasis d-inline-flex text-decoration-none rounded">
                                                         Hours: {{ $module->numberhours }} h
                                                     </span>
@@ -123,7 +123,7 @@
                                     </ul>
                                 </div>
                             </td>
-                            </tr>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
