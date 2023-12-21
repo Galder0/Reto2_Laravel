@@ -49,6 +49,17 @@
     text-decoration: underline;
 }
 
+/* Estilo para los encabezados (h5) */
+h5 {
+    color: #0092A4; /* Color del primer stop de la gradiente lineal */
+}
+
+/* Estilo para los enlaces */
+a {
+    color: #00a424; /* Color del primer stop de la gradiente lineal */
+    text-decoration: underline; /* Subrayado enlaces */
+}
+
 .pagination {
     display: flex;
     list-style: none;
