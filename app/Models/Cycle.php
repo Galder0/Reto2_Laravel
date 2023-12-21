@@ -15,6 +15,10 @@ class Cycle extends Model
     // }
 
 
+public function departments()
+{
+    return $this->belongsTo(Department::class);
+}
 public function modules()
 {
     return $this->belongsToMany(Module::class, 'cycles_modules', 'cycle_id', 'module_id');
@@ -26,7 +30,7 @@ public function users()
 
 }
 
-    protected $fillable = ['name', 'code'];
+    protected $fillable = ['name', 'code', 'department_id'];
 
 }
 

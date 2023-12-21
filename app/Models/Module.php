@@ -15,4 +15,6 @@ class Module extends Model
     return $this->belongsToMany(Cycle::class, 'cycles_modules', 'module_id', 'cycle_id');
 }
 
+protected $fillable = ['name', 'code', 'numberhours', 'year'];
+
 }

@@ -13,4 +13,12 @@ class Department extends Model
     {
         return $this->hasMany(User::class);
     }
+    
+    public function cycles()
+    {
+        return $this->hasMany(Cycle::class);
+    }
+    
+    protected $fillable = ['name'];
+
 }
