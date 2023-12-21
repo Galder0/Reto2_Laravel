@@ -14,9 +14,14 @@ class DepartmentSeeder extends Seeder
     public function run(): void
     {
         DB::table('departments')->insert([
-            //MODULOS DEL PRIMER CICLO (SMR)
-            [ "name"=>"Dep.Informatico", "created_at"=>now()],
-            [ "name"=>"Dep.Secretaria", "created_at"=>now()]
+            [ "name" =>"Dep.Informatico", "created_at"=>now()],
+            [ "name" =>"Dep.Secretaria", "created_at"=>now()],
+            [ "name" => "Dep.Formación y Orientación Laboral)", "created_at" => now() ],
+            [ "name" => "Dep.Química", "created_at" => now() ],
+            [ "name" => "Dep.Marketing", "created_at" => now() ],
+            [ "name" => "Dep.Gestión Administrativa", "created_at" => now() ],
+            [ "name" => "Dep.Electricidad", "created_at" => now() ],
+            [ "name" => "Dep.Automoción", "created_at" => now() ],
         ]);
     }
 }
