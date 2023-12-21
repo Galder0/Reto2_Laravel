@@ -26,6 +26,8 @@
                 <input type="text" name="code" id="code" class="form-control" value="{{ old('code') }}" required minlength="4" maxlength="4">
             </div>
 
+            
+
             <!-- Add other form fields as needed -->
 
             <button type="submit" class="btn btn-primary">Create Cycle</button>
