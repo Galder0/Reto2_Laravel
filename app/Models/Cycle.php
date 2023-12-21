@@ -15,11 +15,19 @@ class Cycle extends Model
     // }
 
 
-    public function modules()
+public function modules()
 {
     return $this->belongsToMany(Module::class, 'cycles_modules', 'cycle_id', 'module_id');
 }
-protected $fillable = ['name', 'code'];
+
+public function users()
+{
+    return $this->belongsToMany(User::class, 'cycles_users', 'cycle_id', 'user_id');
+
+}
+
+    protected $fillable = ['name', 'code'];
+
 }
 
 

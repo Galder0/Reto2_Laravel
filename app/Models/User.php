@@ -19,6 +19,12 @@ class User extends Authenticatable
 
     }
 
+    public function cycles()
+    {
+        return $this->belongsToMany(Cycle::class, 'cycles_users', 'user_id', 'cycle_id');
+
+    }
+
     
     public function department()
     {
