@@ -35,6 +35,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/#') }}">{{ config('name', 'a') }}</a>
                         </li>
+                        <!-- Language Switcher -->
+                        <li class="nav-item">
+                            <a href="{{ route('set_language', 'en') }}" class="btn btn-link">English</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('set_language', 'es') }}" class="btn btn-link">Español</a>
+                        </li>
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -86,6 +93,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/#') }}">A</a>
                     </li>
+                    <!-- Language Switcher -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('set_language', 'en') }}" >English</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('set_language', 'es') }}" >Español</a>
+                    </li>
                     <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))
@@ -123,16 +137,16 @@
                         <a class="nav-link" href="/admin"><i class="bi bi-house-fill"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/roles">Roles</a>
+                        <a class="nav-link" href="/roles"><i class="bi bi-house-fill"></i>Roles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cycles">Cycles</a>
+                        <a class="nav-link" href="/cycles"><i class="bi bi-house-fill"></i>Cycles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/departments">Departments</a>
+                        <a class="nav-link" href="/departments"><i class="bi bi-buildings-fill"></i>Departments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/modules">Modules</a>
+                        <a class="nav-link" href="/modules"><i class="bi bi-house-fill"></i>Modules</a>
                     </li>
                 </ul>
             </div>
@@ -145,19 +159,19 @@
                     <div class="position-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin"><i class="bi bi-house-fill"></i> Dashboard</a>
+                                <a class="nav-link" href="/admin"><i class="bi bi-house-fill">Dashboard</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/roles">Roles</a>
+                                <a class="nav-link" href="/roles"><i class="bi bi-clipboard2-fill">Roles</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/cycles">Cycles</a>
+                                <a class="nav-link" href="/cycles"><i class="bi bi-mortarboard-fill">Cycles</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/departments">Departments</a>
+                                <a class="nav-link" href="/departments"><i class="bi bi-buildings-fill">Departments</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/modules">Modules</a>
+                                <a class="nav-link" href="/modules"><i class="bi bi-book-half">Modules</i></a>
                             </li>
                         </ul>
                     </div>
