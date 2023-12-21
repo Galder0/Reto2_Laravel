@@ -7,6 +7,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LanguageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/roles/update/{role}', 'update')->name('roles.update');
         })->withoutMiddleware([Auth::class]);
 
-        Route::controller(DepartmentController::class, '')->group(function () {
+        Route::controller(DepartmentController::class)->group(function () {
             Route::get('/departments', 'index')->name('departments.index');
             Route::get('/departments/{department}', 'show')->name('departments.show');
             Route::get('/departments/create', 'create')->name('departments.create');
@@ -139,7 +141,7 @@ Route::controller(RoleController::class)->group(function () {
     Route::put('/roles/update/{role}', 'update')->name('roles.update'); 
 })->withoutMiddleware([Auth::class]);
     
-Route::controller(DepartmentController::class, '')->group(function () {
+Route::controller(DepartmentController::class)->group(function () {
     Route::get('/departments', 'index')->name('departments.index');
     Route::get('/departments/{department}', 'show')->name('departments.show');
     Route::get('/departments/create', 'create')->name('departments.create');
@@ -149,7 +151,7 @@ Route::controller(DepartmentController::class, '')->group(function () {
     Route::put('/departments/update/{department}', 'update')->name('departments.update');
 })->withoutMiddleware([Auth::class]);
 
-Route::controller(UserController::class, '')->group(function () {
+Route::controller(UserController::class)->group(function () {
     Route::get('/users/{user}/assign-roles', [UserController::class, 'assignRolesForm'])->name('users.assignRolesForm');
     Route::post('/users/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('users.assignRoles');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
@@ -167,8 +169,5 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-
-
-
+Route::get('/set_language/{language}', LanguageController::class)->name('set_language');
 
