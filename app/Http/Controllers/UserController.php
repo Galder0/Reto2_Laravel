@@ -5,10 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // Add this line
 use App\Models\Role;
+use App\Models\Cycle;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function index(Request $request)
+{
+    $query = User::query();
+
+    // Check if there is a search query
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where('name', 'like', "%$search%");
+    }
+
+    $users = $query->paginate(20);
+
+    return view('users.index', compact('users'));
+}
+    
     public function assignRolesForm(User $user)
     {
         $roles = Role::all();
@@ -31,6 +49,29 @@ class UserController extends Controller
     return redirect('/admin')->with('success', 'Roles assigned successfully.');
 
     }
+    public function assignCyclesForm(User $user)
+    {
+        $cycles = Cycle::all();
+        $userCycles = $user->cycles;
+    
+        return view('users.assignCycles', compact('user', 'cycles', 'userCycles'));
+    }
+
+    public function assingCycles(Request $request, User $user)
+    {
+        $request->validate([
+            'cycles' => 'required|array',
+        ]);
+    
+        DB::transaction(function () use ($request, $user) {
+            // Sync cycles for the user
+            $user->cycles()->sync($request->input('cycles'));
+        });
+    
+        return redirect('/admin')->with('success', 'Cycles assigned successfully.');
+    }
+
+    
 
     public function destroy(User $user)
     {
@@ -42,23 +83,25 @@ class UserController extends Controller
             $user->delete();
         });
 
-         $users = User::paginate(20);
-        return view('admin.index', compact('users'));
+        return redirect('/admin')->with('success', 'User deleted successfully.');
     }
+
     public function edit(User $user)
     {
         $roles = Role::all();
+        $cycles = Cycle::all();
         $userRoles = $user->roles;
+        $userCycles = $user->cycles;
 
-        return view('users.edit', compact('user', 'roles', 'userRoles'));
+        return view('users.edit', compact('user', 'roles', 'cycles', 'userRoles', 'userCycles'));
     }
-
     public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'roles' => 'required|array',
+            'cycles' => 'nullable|array', // Add this line for cycle validation
         ]);
 
         DB::transaction(function () use ($request, $user) {
@@ -69,6 +112,9 @@ class UserController extends Controller
 
             // Sync roles for the user
             $user->roles()->sync($request->input('roles'));
+
+            // Sync cycles for the user
+            $user->cycles()->sync($request->input('cycles', []));
         });
 
         return redirect('/admin')->with('success', 'User updated successfully.');
@@ -77,6 +123,44 @@ class UserController extends Controller
     public function show(User $user)
     {
         return view('users.show', compact('user'));
+    }
+
+    public function create()
+    {
+        $roles = Role::all();
+        $cycles = Cycle::all(); // Fetch all cycles
+
+        return view('users.create', compact('roles', 'cycles'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|string|min:8',
+            'roles' => 'required|array',
+            'cycles' => 'array', // Add this line
+        ]);
+
+        DB::transaction(function () use ($request) {
+            // Create a new user
+            $user = new User([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+            ]);
+            $user->save();
+
+            // Sync roles for the user
+            $user->roles()->sync($request->input('roles'));
+
+            // Sync cycles for the user
+            $user->cycles()->sync($request->input('cycles', []));
+        });
+
+        return redirect('/admin')->with('success', 'User created successfully.');
     }
 
 }
