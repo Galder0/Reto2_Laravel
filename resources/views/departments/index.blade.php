@@ -26,29 +26,48 @@
                             <td>{{ $department->id }}</td>
                             <td>{{ $department->name }}</td>
                             <td>
+                                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#cycleCollapse{{ $department->id }}" aria-expanded="true">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+
                                 <a href="{{ route('departments.show', $department) }}" class="btn btn-info">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                    </svg>
+                                    <i class="bi bi-eye-fill"></i>
                                 </a>
                                 <a href="{{ route('departments.edit', $department) }}" class="btn btn-warning">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                        <path d="M12.742 1.344a1.5 1.5 0 0 1 2.121 2.122l-10 10a1.5 1.5 0 0 1-2.122-2.12l10-10a1.5 1.5 0 0 1 0 2.122z"/>
-                                        <path fill-rule="evenodd" d="M3.504 13.98a1.5 1.5 0 0 1 2.121 0l2.122-2.122a1.5 1.5 0 0 1 2.121 2.122l-2.122 2.122a1.5 1.5 0 0 1-2.12 0zM13 3.5a1 1 0 0 1 2 0v10a1 1 0 0 1-2 0v-10z"/>
-                                    </svg>
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
 
                                 <!-- Add delete button with a Bootstrap modal -->
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ $department->id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M1.5 2.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5zM2 14.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-10a1 1 0 0 0-1-1h-10a1 1 0 0 0-1 1v10zM11.5 0a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
-                                    </svg>
+                                    <i class="bi bi-x-octagon-fill"></i>
                                 </button>
 
                                 <!-- Delete Modal -->
                                 <div class="modal fade" id="deleteModal{{ $department->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                     <!-- Modal content here -->
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">
+                                <div class="collapse" id="cycleCollapse{{ $department->id }}">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        @forelse($department->cycles as $cycle)
+                                            <li class="module-item">
+                                                <div class="d-flex justify-content-between">
+                                                    <span><a href="{{ route('cycles.show', $cycle) }}" class="link-body-emphasis d-inline-flex rounded fs-6">{{ $cycle->name }}</a>
+                                                </span>
+                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">
+                                                        Code: {{ $cycle->code }}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <hr class="module-divider">
+                                        @empty
+                                            <li><p class="fs-6">No cycles for this department.</p></li>
+                                        @endforelse
+                                    </ul>
                                 </div>
                             </td>
                         </tr>
