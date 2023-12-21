@@ -55,9 +55,9 @@ h5 {
 }
 
 /* Estilo para los enlaces */
-li.a {
-    color: #00a424; /* Color del primer stop de la gradiente lineal */
-    text-decoration: underline; /* Subrayado enlaces */
+li a, td a#link{
+    color: #0092A4 !important; /* Color del primer stop de la gradiente lineal */
+    text-decoration: underline !important; /* Subrayado enlaces */
 }
 
 .pagination {

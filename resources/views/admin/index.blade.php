@@ -75,7 +75,7 @@
         @if ($user->id >= 1)
             <tr>
                 <td>{{ $user->id }}</td>
-                <td><a href="{{ route('users.show', $user) }}">{{ $user->name }}</a></td>
+                <td><a id="link" href="{{ route('users.show', $user) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
                 <td>
                     @if ($user->department)
