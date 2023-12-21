@@ -28,6 +28,7 @@ class ModuleController extends Controller
             'name' => 'required|unique:modules|max:255',
             'code' => 'required|unique:modules',
             'numberhours' => 'required',
+            'year' => 'required'
         ]);
 
         // Create a new module
