@@ -55,7 +55,7 @@ h5 {
 }
 
 /* Estilo para los enlaces */
-a {
+li.a {
     color: #00a424; /* Color del primer stop de la gradiente lineal */
     text-decoration: underline; /* Subrayado enlaces */
 }
