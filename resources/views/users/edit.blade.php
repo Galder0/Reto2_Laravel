@@ -20,16 +20,29 @@
     </div>
 
     <div class="form-group">
-        <h1><label for="roles">Select Roles</label></h1>
+        <h5><label for="roles">Select Roles:</label></h5>
         @foreach ($roles as $role)
             <div class="form-check">
-                <input type="checkbox" name="roles[]" id="role_{{ $role->id }}" value="{{ $role->id }}" {{ $user->roles->contains($role) ? 'checked' : '' }}>
+                @if ($user->hasRole('student'))
+                    <input type="checkbox" name="roles[]" id="role_{{ $role->id }}" value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'checked' : 'disabled' }}> 
+                @else
+                    <input type="checkbox" name="roles[]" id="role_{{ $role->id }}" value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'checked' : '' }}> 
+                @endif
                 <label for="role_{{ $role->id }}">{{ $role->name }}</label>
             </div>
         @endforeach
     </div>
-
+    
+    <div class="form-group">
+        <h5><label>Select Cycles:</label></h5>
+        @foreach ($cycles as $cycle)
+            <div class="form-check">
+                <input type="checkbox" name="cycles[]" id="cycle_{{ $cycle->id }}" value="{{ $cycle->id }}" {{ $user->cycles->contains($cycle) ? 'checked' : '' }}> 
+                <label for="cycle_{{ $cycle->id }}">{{ $cycle->name }}</label>
+            </div>
+        @endforeach
+    </div>
+    
     <button type="submit" class="btn btn-primary">Update User</button>
 </form>
 @endsection
-    
