@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class CycleController extends Controller
 {
+
     public function assignModulesForm(Cycle $cycle)
     {
         $modules = Module::all();
@@ -96,11 +97,14 @@ class CycleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Cycle $cycle) {
+        
+        $usersInCycle = $cycle->users;
         $modules = Module::all();
         $cycleModules = $cycle->modules;
-
-        return view('cycles.show', compact('cycle', 'modules', 'cycleModules'));
+    
+        return view('cycles.show', compact('cycle', 'modules', 'cycleModules', 'usersInCycle'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
