@@ -14,6 +14,10 @@ class Cycle extends Model
     //     return $this->hasMany(Module::class);
     // }
 
+public function cycles()
+{
+    return $this->belongsToMany(Cycle::class, 'cycles_users');
+}
 
 public function departments()
 {
