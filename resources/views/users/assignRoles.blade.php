@@ -13,8 +13,7 @@
             @foreach ($roles as $role)
                 <div class="form-check">
                     <input type="checkbox" name="roles[]" id="role_{{ $role->id }}" value="{{ $role->id }}"
-                        {{ $user->hasRole($role->name) ? 'checked' : '' }}
-                        {{ $user->hasRole('student') && $role->name !== 'student' ? 'disabled' : '' }}>
+                        {{ $user->hasRole($role->name) ? 'checked' : '' }}>
                     <label for="role_{{ $role->id }}">{{ $role->name }}</label>
                 </div>
             @endforeach

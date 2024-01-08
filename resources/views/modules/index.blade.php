@@ -37,7 +37,7 @@
 
                                 <!-- Add delete button with a Bootstrap modal -->
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ $module->id }}">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-trash"></i>
                                 </button>
 
                                 <!-- Delete Modal -->
