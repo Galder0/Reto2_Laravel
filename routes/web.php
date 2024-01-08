@@ -162,6 +162,8 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::get('/users/{user}/assign-cycles', [UserController::class, 'assignCyclesForm'])->name('users.assignCyclesForm');
     Route::post('/users/{user}/assign-cycles', [UserController::class, 'assingCycles'])->name('users.assignCycles');
+    Route::get('/changePassword', [UserController::class, 'changePasswordForm'])->name('changePassword.form');
+    Route::post('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
     
 })->withoutMiddleware([Auth::class]);
 
