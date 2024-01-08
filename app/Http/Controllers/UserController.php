@@ -37,17 +37,21 @@ class UserController extends Controller
 
     public function assignRoles(Request $request, User $user)
     {
-    $request->validate([
-        'roles' => 'required|array',
-    ]);
+        $request->validate([
+            'roles' => 'required|array',
+        ]);
 
-    DB::transaction(function () use ($request, $user) {
-        // Sync roles for the user
-        $user->roles()->sync($request->input('roles'));
-    });
+        // Check if the user has the role "student"
+        if ($user->hasRole('student')) {
+            return redirect('/admin')->with('error', 'Students cannot be assigned additional roles.');
+        }
 
-    return redirect('/admin')->with('success', 'Roles assigned successfully.');
+        DB::transaction(function () use ($request, $user) {
+            // Sync roles for the user
+            $user->roles()->sync($request->input('roles'));
+        });
 
+        return redirect('/admin')->with('success', 'Roles assigned successfully.');
     }
     public function assignCyclesForm(User $user)
     {
@@ -161,6 +165,34 @@ class UserController extends Controller
         });
 
         return redirect('/admin')->with('success', 'User created successfully.');
+    }
+    
+    public function changePasswordForm()
+    {
+        return view('users.changePassword');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8',
+            'new_password_confirmation' => 'required|same:new_password',
+        ]);
+
+        $user = auth()->user(); // Assuming you are working with the currently authenticated user
+
+        // Check if the current password matches the user's password
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return redirect()->back()->with('error', 'The current password is incorrect.');
+        }
+
+        // Update the user's password
+        $user->update([
+            'password' => Hash::make($request->input('new_password')),
+        ]);
+
+        return redirect('/admin')->with('success', 'Password changed successfully.');
     }
 
 }
