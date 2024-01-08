@@ -30,10 +30,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/home') }}">{{ config('name', 'Home') }}</a>
+                            <a class="nav-link" href="{{ url('/admin/home') }}">{{ config('name', 'Home') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/#') }}">{{ config('name', 'a') }}</a>
+                            <a class="nav-link" href="{{ url('/admin/#') }}">{{ config('name', 'a') }}</a>
                         </li>
                         <!-- Language Switcher -->
                         <li class="nav-item">
@@ -45,34 +45,38 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
+                    @guest
+                        @if (Route::has('login'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                        @endguest
+                        @endif
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <!-- Authenticated Links -->
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('changePassword.form') }}">
+                                    {{ __('Change Password') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @endguest
                     </ul>
                 </div>
             </div>
@@ -137,16 +141,16 @@
                         <a class="nav-link" href="/admin"><i class="bi bi-house-fill"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/roles"><i class="bi bi-house-fill"></i>Roles</a>
+                        <a class="nav-link" href="/admin/roles"><i class="bi bi-house-fill"></i>Roles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cycles"><i class="bi bi-house-fill"></i>Cycles</a>
+                        <a class="nav-link" href="/admin/cycles"><i class="bi bi-house-fill"></i>Cycles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/departments"><i class="bi bi-buildings-fill"></i>Departments</a>
+                        <a class="nav-link" href="/admin/departments"><i class="bi bi-buildings-fill"></i>Departments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/modules"><i class="bi bi-house-fill"></i>Modules</a>
+                        <a class="nav-link" href="/admin/modules"><i class="bi bi-house-fill"></i>Modules</a>
                     </li>
                 </ul>
             </div>
@@ -162,28 +166,27 @@
                                 <a class="nav-link" href="/admin"><i class="bi bi-house-fill">Dashboard</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/roles"><i class="bi bi-clipboard2-fill">Roles</i></a>
+                                <a class="nav-link" href="/admin/roles"><i class="bi bi-clipboard2-fill">Roles</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/cycles"><i class="bi bi-mortarboard-fill">Cycles</i></a>
+                                <a class="nav-link" href="/admin/cycles"><i class="bi bi-mortarboard-fill">Cycles</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/departments"><i class="bi bi-buildings-fill">Departments</i></a>
+                                <a class="nav-link" href="/admin/departments"><i class="bi bi-buildings-fill">Departments</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/modules"><i class="bi bi-book-half">Modules</i></a>
+                                <a class="nav-link" href="/admin/modules"><i class="bi bi-book-half">Modules</i></a>
                             </li>
                         </ul>
                     </div>
                 </nav>
 
                 <!-- Page Content -->
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
                     @yield('content')
                 </main>
-
-                
             </div>
+            
             <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
                 <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="btnSwitch"
                     type="button" data-bs-toggle="dropdown" aria-label="Toggle theme (dark)">
