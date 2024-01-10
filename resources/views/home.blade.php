@@ -1,23 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+    <div class="container">
+        <h2>Home</h2>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        <!-- Mostrar departamento y compañeros -->
+        @if (Auth::user()->hasRole('teacher'))
 
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
+            <h3>Mi Departamento</h3>
+            <p>{{ Auth::user()->department->name }}</p>
+
+            <h3>Mis Compañeros</h3>
+            <!-- Desplegable de compañeros -->
+            <select>
+                @foreach ($classmates as $classmate)
+                    <option value="{{ $classmate->id }}">{{ $classmate->name }} - {{ $classmate->email }}</option>
+                @endforeach
+            </select>
+
+            <h2>Mis Módulos</h2>
+            <!-- Lista de módulos que da -->
+            <ul>
+                @foreach ($professorModules as $module)
+                    <li>{{ $module->name }}</li>
+                    <!-- Desplegable de alumnos por módulo -->
+                    <select>
+                    @foreach ($students as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }} - {{ $user->email }}</option>
+                    @endforeach
+                    </select>
+                @endforeach
+            </ul>
+        @elseif (!Auth::user()->hasRole('profesor'))
+            <p>Alumno</p>
+        @endif
+
+        
     </div>
-</div>
 @endsection
