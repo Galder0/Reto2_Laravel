@@ -31,7 +31,7 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Update Department</button>
-                <a href="{{ route('departments.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ redirect('/admin/departments')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

@@ -1,15 +1,15 @@
-@extends('layouts.admin')
+@extends(Request::is('admin/departments*') ? 'layouts.admin' : 'layouts.app')
+
 
 @section('content')
     <div class="container">
         <h2>Departments</h2>
 
-        <a href="{{ route('departments.create') }}" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-            </svg>
-        </a>
+        @if (Request::is('admin/departments*'))
+            <a href="{{ route('departments.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+        @endif
 
         @if ($departments->count() > 0)
             <table class="table mt-3">
@@ -33,19 +33,41 @@
                                 <a href="{{ route('departments.show', $department) }}" class="btn btn-info">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
-                                <a href="{{ route('departments.edit', $department) }}" class="btn btn-warning">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+                                @if (Request::is('admin/departments*'))
+                                    <a href="{{ route('departments.edit', $department) }}" class="btn btn-warning">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
 
-                                <!-- Add delete button with a Bootstrap modal -->
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ $department->id }}">
-                                    <i class="bi bi-x-octagon-fill"></i>
-                                </button>
-
-                                <!-- Delete Modal -->
-                                <div class="modal fade" id="deleteModal{{ $department->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                    <!-- Modal content here -->
-                                </div>
+                                    <!-- Add delete button with a Bootstrap modal -->
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ $department->id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade" id="deleteModal{{ $department->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this department?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <form action="{{ route('departments.destroy', $department) }}" method="post" style="display:inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
 
@@ -53,24 +75,39 @@
                             <td colspan="4">
                                 <div class="collapse" id="cycleCollapse{{ $department->id }}">
                                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                        @forelse($department->cycles as $cycle)
-                                            <li class="module-item">
-                                                <div class="d-flex justify-content-between">
-                                                    <span><a href="{{ route('cycles.show', $cycle) }}" class="link-body-emphasis d-inline-flex rounded fs-6">{{ $cycle->name }}</a>
-                                                </span>
-                                                    <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">
-                                                        Code: {{ $cycle->code }}
+                                        @if (request()->is('departments*'))
+                                            @forelse($department->users as $user)
+                                                <li class="module-item">
+                                                    <div class="d-flex justify-content-between">
+                                                    <span>
+                                                        Name: {{ $user->name }}<br>
+                                                        Email: {{ $user->email }}<br>
+                                                        <!-- Telephone: {{ $user->telephone }} -->
                                                     </span>
-                                                </div>
-                                            </li>
-                                            <hr class="module-divider">
-                                        @empty
-                                            <li><p class="fs-6">No cycles for this department.</p></li>
-                                        @endforelse
+                                                    </div>
+                                                </li>
+                                                <hr class="module-divider">
+                                            @empty
+                                                <li><p class="fs-6">No users for this department.</p></li>
+                                            @endforelse
+                                        @else
+                                            @forelse($department->cycles as $cycle)
+                                                <li class="module-item">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span><a href="{{ route('cycles.show', $cycle) }}" class="link-body-emphasis d-inline-flex rounded fs-6">{{ $cycle->name }}</a></span>
+                                                        <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">Code: {{ $cycle->code }}</span>
+                                                    </div>
+                                                </li>
+                                                <hr class="module-divider">
+                                            @empty
+                                                <li><p class="fs-6">No cycles for this department.</p></li>
+                                            @endforelse
+                                        @endif
                                     </ul>
                                 </div>
                             </td>
                         </tr>
+
                     @endforeach
                 </tbody>
             </table>
