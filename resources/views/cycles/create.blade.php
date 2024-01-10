@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
@@ -24,6 +24,18 @@
             <div class="form-group">
                 <label for="code">Cycle Code:</label>
                 <input type="text" name="code" id="code" class="form-control" value="{{ old('code') }}" required minlength="4" maxlength="4">
+            </div>
+
+            <div class="form-group">
+                <label for="department_id">Department:</label>
+                <select name="department_id" id="department_id" class="form-control" required>
+                    @foreach ($departments as $department)
+                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                    @endforeach
+                </select>
+                @error('department_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             

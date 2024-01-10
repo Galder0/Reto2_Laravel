@@ -46,8 +46,20 @@
             </div>
 
             <div class="form-group">
+                <label for="department_id">Department:</label>
+                <select name="department_id" id="department_id" class="form-control" required>
+                    @foreach ($departments as $department)
+                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                    @endforeach
+                </select>
+                @error('department_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary">Update Cycle</button>
-                <a href="{{ route('cycles.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ redirect('/admin/index')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
