@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(Request::is('admin/modules*') ? 'layouts.admin' : 'layouts.app')
 
 @section('content')
     <div class="container">
@@ -16,6 +16,7 @@
                         <th>Name</th>
                         <th>Code</th>
                         <th>Hours</th>
+                        <th>Year</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -26,6 +27,7 @@
                             <td>{{ $module->name }}</td>
                             <td>{{ $module->code}}</td>
                             <td>{{ $module->numberhours}}</td>
+                            <td>{{ $module->year }}</td>
                             <td>
                                 <a href="{{ route('modules.show', $module) }}" class="btn btn-info">
                                     <i class="bi bi-eye-fill"></i>

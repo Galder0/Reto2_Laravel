@@ -28,6 +28,14 @@
                 <input type="text" name="numberhours" id="numberhours" class="form-control" required minlenght="1" maxlength="3">
             </div>
 
+            <div class="form-group">
+                <label for="year">Module Year:</label>
+                <select name="year" id="year" class="form-control" required>
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                </select>
+            </div>
+
             <!-- Add other form fields as needed -->
 
             <button type="submit" class="btn btn-primary">Create Module</button>

@@ -38,10 +38,18 @@
                 <label for="code">Module Hour count:</label>
                 <input type="text" name="numberhours" id="numberhours" class="form-control" value="{{ old('code', $module->numberhours) }}" required maxlength="4">
             </div>
+            
+            <div class="form-group">
+                <label for="year">Module Year:</label>
+                <select name="year" id="year" class="form-control" required>
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                </select>
+            </div>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Update Module</button>
-                <a href="{{ route('modules.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ redirect('/admin/modules')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
