@@ -27,15 +27,58 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/home') }}">{{ config('name', 'Home') }}</a>
+                            <a class="nav-link" href="{{ url('/home') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/#') }}">{{ config('name', 'a') }}</a>
+                            <a class="nav-link" href="{{ url('/#') }}">Personal</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/departments') }}">Departments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/cycles') }}">Cycles</a>
+                        </li>
+                        <!-- Language Switcher -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('set_language', 'en') }}" >English</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('set_language', 'es') }}" >Español</a>
+                        </li>
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <!-- Authenticated Links -->
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('changePassword.form') }}">
+                                        {{ __('Change Password') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
                     </ul>
-
-                    
-
                 </div>
             </div>
         </nav>
@@ -53,7 +96,20 @@
                         <a class="nav-link" href="{{ url('/home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#') }}">A</a>
+                        <a class="nav-link" href="{{ url('/#') }}">Personal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/departments') }}">Departments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/cycles') }}">Cycles</a>
+                    </li>
+                    <!-- Language Switcher -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('set_language', 'en') }}" >English</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('set_language', 'es') }}" >Español</a>
                     </li>
                     <!-- Authentication Links -->
                     @guest
@@ -75,11 +131,8 @@
                                 {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('changePassword.form') }}">
-                                    {{ __('Change Password') }}
-                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
+                                                     document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -89,7 +142,7 @@
                         </li>
                     @endguest
                 </ul>
-            </div>
+            </div>  
         </div>
 
         <div class="container-fluid">
@@ -98,6 +151,28 @@
                     @yield('content')
                 </main>
             </div>
+        </div>
+
+        <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+            <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="btnSwitch"
+                type="button" data-bs-toggle="dropdown" aria-label="Toggle theme (dark)">
+                <i class="bi bi-circle-half"></i>
+            </button>
+            <!-- Menú desplegable para cambiar el tema -->
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+                <li>
+                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                    <i class="bi bi-sun-fill"></i>
+                        Light
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                    <i class="bi bi-moon-stars-fill"></i>
+                        Dark
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
 
