@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cycle;
 use App\Models\Module;
+use App\Models\Department;
 use Illuminate\Support\Facades\DB;
 
 
@@ -33,6 +34,7 @@ class CycleController extends Controller
 
         return redirect('/cycles')->with('success', 'Modules assigned successfully.');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,8 +45,8 @@ class CycleController extends Controller
         // Retrieve all cycles from the database
         $cycles = Cycle::all();
         
-        // Return the view with the cycles data
-        return view('cycles.index', compact('cycles'));
+        // Return the response
+        return response()->view('cycles.index', compact('cycles'));
     }
 
     /**
@@ -52,72 +54,76 @@ class CycleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        return view('cycles.create');
+    public function create()
+    {
+        $departments = Department::all();
+        return response()->view('cycles.create', compact('departments'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
-{
-    // Validate the request data
-    $request->validate([
-        'name' => 'required|string|max:255|unique:cycles',
-        'code' => 'required|digits:4|unique:cycles',
-    ]);
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255|unique:cycles',
+            'code' => 'required|digits:4|unique:cycles',
+            'department_id' => 'required|exists:departments,id',
+        ]);
 
-    // Check uniqueness separately for 'name'
-    if (Cycle::where('name', $request->input('name'))->exists()) {
-        return redirect()->route('cycles.create')->with('error', 'Cycle name must be unique.');
+        // Check uniqueness separately for 'name'
+        if (Cycle::where('name', $validatedData['name'])->exists()) {
+            return redirect()->route('cycles.create')->with('error', 'Cycle name must be unique.')->withInput();
+        }
+
+        // Check uniqueness separately for 'code'
+        if (Cycle::where('code', $validatedData['code'])->exists()) {
+            return redirect()->route('cycles.create')->with('error', 'Cycle code must be unique.')->withInput();
+        }
+
+        // Add the 'department_id' to the validated data
+        $validatedData['department_id'] = $request->input('department_id');
+
+        // Create a new Cycle instance and save
+        $cycle = new Cycle($validatedData);
+        $cycle->save();
+
+        // Redirect to the cycles index page
+        return redirect("/admin/cycles");
     }
-
-    // Check uniqueness separately for 'code'
-    if (Cycle::where('code', $request->input('code'))->exists()) {
-        return redirect()->route('cycles.create')->with('error', 'Cycle code must be unique.');
-    }
-
-    // Create a new Cycle instance and save
-    $cycle = new Cycle();
-    $cycle->name = $request->input('name');
-    $cycle->code = $request->input('code');
-    $cycle->save();
-
-    // Redirect to the cycles index page or do something else
-    return redirect()->route('cycles.index')->with('success', 'Cycle created successfully!');
-}
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Cycle  $cycle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Cycle $cycle) {
         
         $usersInCycle = $cycle->users;
         $modules = Module::all();
         $cycleModules = $cycle->modules;
-    
+
         return view('cycles.show', compact('cycle', 'modules', 'cycleModules', 'usersInCycle'));
     }
-    
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Cycle  $cycle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Cycle $cycle) {
 
         $modules = Module::all();
+        $departments = Department::all();
         $cycleModules = $cycle->modules;
 
-        return view('cycles.edit', compact('cycle', 'modules', 'cycleModules'));
+        return view('cycles.edit', compact('cycle', 'modules', 'cycleModules', 'departments'));
     }
 
     /**
@@ -125,11 +131,8 @@ class CycleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Cycle  $cycle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-
-// ...
-
     public function update(Request $request, Cycle $cycle)
     {
         $request->validate([
@@ -148,15 +151,14 @@ class CycleController extends Controller
             $cycle->modules()->sync($request->input('modules'));
         });
 
-        return redirect()->route('cycles.index')->with('success', 'Cycle updated successfully.');
+        return redirect("/admin/cycles");
     }
-
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Cycle  $cycle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Cycle $cycle) {
         DB::transaction(function () use ($cycle) {
@@ -165,8 +167,8 @@ class CycleController extends Controller
             // Delete the cycle
             $cycle->delete();
         });
+
         // Redirect to the index page with a success message
-        $cycles = Cycle::paginate(20);
-        return view('cycles.index', compact('cycles'));
-    } 
+        return redirect("/admin/cycles");
+    }
 }

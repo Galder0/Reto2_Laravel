@@ -19,8 +19,8 @@ class RoleController extends Controller
         // Retrieve all roles from the database
         $roles = Role::all();
 
-        // Return the view with the roles data
-        return view('roles.index', compact('roles'));
+        // Return the response
+        return response()->view('roles.index', compact('roles'));
     }
 
     /**
@@ -31,7 +31,7 @@ class RoleController extends Controller
     public function create()
     {
         // Return the view for creating a new role
-        return view('roles.create');
+        return response()->view('roles.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class RoleController extends Controller
         $role->save();
 
         // Redirect to the roles index page or do something else
-        return redirect()->route('roles.index')->with('success', 'Role created successfully!');
+        return redirect("/admin/roles")->with('success', 'Role updated successfully.');
     }
 
     /**
@@ -65,7 +65,7 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         // Return the view for displaying a specific role
-        return view('roles.show', compact('role'));
+        return response()->view('roles.show', compact('role'));
     }
 
     /**
@@ -77,7 +77,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         // Return the view for editing a specific role
-        return view('roles.edit', compact('role'));
+        return response()->view('roles.edit', compact('role'));
     }
 
     /**
@@ -88,20 +88,19 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Role $role)
-    {
-        // Validate the incoming request data
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+{
+    // Validate the incoming request data
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
 
-        $role->name = $request->input('name');
-        $role->updated_at = now();
-        $role->save();
+    $role->name = $request->input('name');
+    $role->updated_at = now();
+    $role->save();
 
-        // Redirect to the index page with a success message
-        return redirect()->route('roles.index')
-            ->with('success', 'Role updated successfully.');
-    }
+    // Redirect to the index page with a success message
+    return redirect("/admin/roles")->with('success', 'Role updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.
@@ -110,12 +109,11 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Role $role)
-    {
-        // Delete the specified role
-        $role->delete();
+{
+    // Delete the specified role
+    $role->delete();
 
-        // Redirect to the index page with a success message
-        return redirect()->route('roles.index')
-            ->with('success', 'Role deleted successfully.');
-    }
+    // Redirect to the roles index page
+    return redirect("/admin/roles")->with('success', 'Role deleted successfully!');
+}
 }

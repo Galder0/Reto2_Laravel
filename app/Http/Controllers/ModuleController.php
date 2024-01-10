@@ -35,16 +35,18 @@ class ModuleController extends Controller
             'name' => 'required|max:255',
             'code' => 'required|unique:modules',
             'numberhours' => 'required',
+            'year' => 'required|integer',
         ]);
 
         $module = new Module();
         $module->name = $request->input('name');
         $module->code = $request->input('code');
+        $module->year = $request->input('year');
         $module->numberhours = $request->input('numberhours');
         $module->save();
 
         // Redirect to the modules index page or do something else
-        return redirect()->route('modules.index')->with('success', 'Module created successfully!');
+        return redirect("/admin/modules");
     }
 
     /**
@@ -71,10 +73,11 @@ class ModuleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|integer',
+            'year' => 'required|integer',
         ]);
 
         // Check if the updated code is unique, excluding the current cycle's ID
-        $isUniqueCode = Model::where('code', $request->input('code'))
+        $isUniqueCode = Module::where('code', $request->input('code'))
             ->where('id', '!=', $module->id)
             ->doesntExist();
     
@@ -88,13 +91,13 @@ class ModuleController extends Controller
         // Update the cycle with the validated data
         $module->name = $request->input('name');
         $module->code = $request->input('code');
+        $module->year = $request->input('year');
         $module->numberhours = $request->input('numberhours');
         $module->updated_at = now();
         $module->save();
     
         // Redirect to the index page with a success message
-        return redirect()->route('modules.index')
-            ->with('success', 'Module updated successfully.');
+        return redirect("/admin/modules");
     }
 
     /**
@@ -104,7 +107,6 @@ class ModuleController extends Controller
         $module->delete();
 
         // Redirect to the index page with a success message
-        return redirect()->route('modules.index')
-            ->with('success', 'Module deleted successfully.');
+        return redirect("/admin/modules");
     }
 }

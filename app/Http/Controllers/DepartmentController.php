@@ -12,12 +12,16 @@ class DepartmentController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $cycles = Cycle::all();
-        $departments = Department::all();
-        return view('departments.index', compact('departments', 'cycles'));
+{
+    $departments = Department::with('cycles')->get(); // Load cycles for each department
+
+    // Check if the request is coming from /users*
+    if (request()->is('users*')) {
+        $departments->load('users'); // Load users instead of cycles
     }
 
+    return view('departments.index', compact('departments'));
+}
     /**
      * Show the form for creating a new resource.
      */
@@ -73,8 +77,7 @@ class DepartmentController extends Controller
         $department->updated_at = now();
         $department->save();
 
-
-        return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
+        return redirect("/admin/departments");
     }
 
     /**
@@ -84,6 +87,6 @@ class DepartmentController extends Controller
     {
         $department->delete();
 
-        return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
+        return redirect("/admin/departments");
     }
 }

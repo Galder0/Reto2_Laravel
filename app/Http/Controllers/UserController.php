@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB; // Add this line
 use App\Models\Role;
 use App\Models\Cycle;
 use App\Models\User;
+use App\Models\Department;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -43,7 +44,7 @@ class UserController extends Controller
 
         // Check if the user has the role "student"
         if ($user->hasRole('student')) {
-            return redirect('/admin')->with('error', 'Students cannot be assigned additional roles.');
+            return redirect()->back()->with('error', 'Students cannot be assigned additional roles.');
         }
 
         DB::transaction(function () use ($request, $user) {
@@ -63,6 +64,7 @@ class UserController extends Controller
 
     public function assingCycles(Request $request, User $user)
     {
+        // TODOO : the time has to be created or updated on the function.
         $request->validate([
             'cycles' => 'required|array',
         ]);
@@ -131,10 +133,11 @@ class UserController extends Controller
 
     public function create()
     {
+        $departments = Department::all();
         $roles = Role::all();
         $cycles = Cycle::all(); // Fetch all cycles
 
-        return view('users.create', compact('roles', 'cycles'));
+        return view('users.create', compact('roles', 'cycles', 'departments'));
     }
 
     public function store(Request $request)
@@ -143,18 +146,19 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|string|min:8',
             'roles' => 'required|array',
-            'cycles' => 'array', // Add this line
+            'department' => 'nullable|exists:departments,id',
+            'cycles' => 'array',
         ]);
 
         DB::transaction(function () use ($request) {
-            // Create a new user
+            // Create a new user with a default password '12341234'
             $user = new User([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'password' => Hash::make($request->input('password')),
+                'password' => Hash::make('12341234'), // Set the default password here
             ]);
+
             $user->save();
 
             // Sync roles for the user
@@ -162,9 +166,13 @@ class UserController extends Controller
 
             // Sync cycles for the user
             $user->cycles()->sync($request->input('cycles', []));
+
+            // Associate the selected department with the user if provided
+            $user->department()->associate($request->input('department'));
+            $user->save();
         });
 
-        return redirect('/admin')->with('success', 'User created successfully.');
+        return redirect('/admin')->with('success', 'User created successfully with the default password.');
     }
     
     public function changePasswordForm()
@@ -192,7 +200,22 @@ class UserController extends Controller
             'password' => Hash::make($request->input('new_password')),
         ]);
 
-        return redirect('/admin')->with('success', 'Password changed successfully.');
+        $userRoles = $user->roles;
+
+        // Check if the user has the 'admin' role
+        if ($userRoles->contains('name', 'admin')) {
+            // Redirect to the admin page
+            return redirect('/admin')->with('success', 'Password changed successfully.');
+        } else {
+            // Redirect to the home page
+            return redirect('/home')->with('success', 'Password changed successfully.');
+        }
     }
+
+    public function getRoleNames()
+    {
+        return $this->roles()->pluck('name')->toArray();
+    }
+
 
 }
