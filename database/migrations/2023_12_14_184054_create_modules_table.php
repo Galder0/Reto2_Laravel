@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('code')->unique();
             $table->integer('numberhours');
             $table->integer('year');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
