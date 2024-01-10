@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-
 </head>
 
 <body style="display: none;" class="preload">
@@ -36,12 +35,12 @@
                             <a class="nav-link" href="{{ url('/admin/#') }}">{{ config('name', 'a') }}</a>
                         </li>
                         <!-- Language Switcher -->
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="{{ route('set_language', 'en') }}" class="btn btn-link">English</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('set_language', 'es') }}" class="btn btn-link">Español</a>
-                        </li>
+                        </li> -->
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -138,19 +137,19 @@
                     <hr>
                     <h2 class="offcanvas-title">Admin Links</h2>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin"><i class="bi bi-house-fill"></i> Dashboard</a>
+                        <a class="nav-link" href="/admin" id="dashboard-link"><i class="bi bi-house-fill"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/roles"><i class="bi bi-house-fill"></i>Roles</a>
+                        <a class="nav-link" href="/admin/roles" id="roles-link"><i class="bi bi-house-fill"></i> Roles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/cycles"><i class="bi bi-house-fill"></i>Cycles</a>
+                        <a class="nav-link" href="/admin/cycles" id="cycles-link"><i class="bi bi-house-fill"></i> Cycles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/departments"><i class="bi bi-buildings-fill"></i>Departments</a>
+                        <a class="nav-link" href="/admin/departments" id="departments-link"><i class="bi bi-buildings-fill"></i> Departments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/modules"><i class="bi bi-house-fill"></i>Modules</a>
+                        <a class="nav-link" href="/admin/modules" id="modules-link"><i class="bi bi-house-fill"></i> Modules</a>
                     </li>
                 </ul>
             </div>
