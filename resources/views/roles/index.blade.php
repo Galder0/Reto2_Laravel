@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(Request::is('admin/roles*') ? 'layouts.admin' : 'layouts.app')
 
 @section('content')
     <div class="container">

@@ -22,7 +22,7 @@
             <!-- Add other form fields for editing as needed -->
 
             <button type="submit" class="btn btn-primary">Update Role</button>
-            <a href="{{ route('roles.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ redirect('/admin/roles')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 @endsection

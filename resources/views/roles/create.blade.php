@@ -23,6 +23,7 @@
             <!-- Add other form fields as needed -->
 
             <button type="submit" class="btn btn-primary">Create Role</button>
+            
         </form>
     </div>
 @endsection
