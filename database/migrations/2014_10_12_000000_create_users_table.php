@@ -20,13 +20,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+            $table->softDeletes();
             $table->id();
             $table->string('name');
-            // $table->string('surnames')->nullable();
-            // $table->string('DNI')->nullable();
+            $table->string('surnames')->nullable();
+            $table->string('DNI')->nullable();
             $table->string('email')->unique();
-            // $table->string('direction')->nullable();
-            // $table->string('phone_number')->nullable();
+            $table->string('direction')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->boolean('fct_dual')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
