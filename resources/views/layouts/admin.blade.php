@@ -19,7 +19,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/admin') }}">
                     <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name', 'Laravel') }}" height="30">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas"
@@ -28,9 +28,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/admin/home') }}">{{ config('name', 'Home') }}</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/admin/#') }}">{{ config('name', 'a') }}</a>
                         </li>
@@ -90,9 +87,6 @@
             <div class="offcanvas-body">
                 <ul class="nav flex-column">
                     <!-- Navbar Links -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/home') }}">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/#') }}">A</a>
                     </li>
