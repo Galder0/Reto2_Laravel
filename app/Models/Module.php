@@ -10,10 +10,17 @@ class Module extends Model
 {
     use HasFactory;
 
+    
     public function cycles()
 {
-    return $this->belongsToMany(Cycle::class, 'cycles_modules', 'module_id', 'cycle_id');
+    return $this->belongsToMany(Cycle::class, 'modules_cycles_users', 'module_id', 'cycle_id');
 }
+
+    public function users()
+{
+    return $this->belongsToMany(User::class, 'modules_cycles_users', 'module_id', 'user_id');
+}
+
 
 protected $fillable = ['name', 'code', 'numberhours', 'year'];
 

@@ -25,13 +25,12 @@ public function departments()
 }
 public function modules()
 {
-    return $this->belongsToMany(Module::class, 'cycles_modules', 'cycle_id', 'module_id');
+    return $this->belongsToMany(Module::class, 'modules_cycles_users', 'cycle_id', 'module_id');
 }
 
 public function users()
 {
-    return $this->belongsToMany(User::class, 'cycles_users', 'cycle_id', 'user_id');
-
+    return $this->belongsToMany(User::class, 'modules_cycles_users', 'cycle_id', 'user_id');
 }
 
     protected $fillable = ['name', 'code', 'department_id'];

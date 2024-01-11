@@ -29,10 +29,14 @@ class User extends Authenticatable
 
     }
 
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'modules_cycles_users', 'user_id', 'module_id');
+    }
+
     public function cycles()
     {
-        return $this->belongsToMany(Cycle::class, 'cycles_users', 'user_id', 'cycle_id');
-
+        return $this->belongsToMany(Cycle::class, 'modules_cycles_users', 'user_id', 'cycle_id');
     }
 
     
