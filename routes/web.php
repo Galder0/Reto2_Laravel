@@ -41,7 +41,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('admin/roles', RoleController::class)->middleware(['auth']);
 
-        Route::resource('admin/users', UserController::class)->middleware(['web', 'auth']);
         Route::controller(UserController::class)->middleware(['web', 'auth'])->group(function () {
             Route::get('/users/{user}/assign-roles', 'assignRolesForm')->name('users.assignRolesForm');
             Route::post('/users/{user}/assign-roles', 'assignRoles')->name('users.assignRoles');
@@ -50,11 +49,11 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/users/{user}', 'update')->name('users.update');
             Route::get('/users/{user}', 'show')->name('users.show');
             
-            Route::get('/admin/users/create', 'create')->name('users.create');
-            Route::post('/admin/users', 'store')->name('users.store');
 
             Route::get('/users/{user}/assign-cycles', 'assignCyclesForm')->name('users.assignCyclesForm');
             Route::post('/users/{user}/assign-cycles', 'assingCycles')->name('users.assignCycles');
+            Route::get('/users/{user}/assign-modules', 'assignModulesForm')->name('users.assignModulesForm');
+            Route::post('/users/{user}/assign-modules','assignModules')->name('users.assignModules');
             Route::get('/changePassword', 'changePasswordForm')->name('changePassword.form');
             Route::post('/changePassword', 'changePassword')->name('changePassword');
         })->withoutMiddleware([Auth::class]);
@@ -77,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/modules', [ModuleController::class, 'index'])->name('modules.index');
     Route::get('/modules/{module}', [ModuleController::class, 'show'])->name('modules.show');
 
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     
 
