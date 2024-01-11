@@ -93,12 +93,16 @@
                 </td>
                 <td>
                     <!-- Button to assign Roles -->
-                    <a href="{{ route('users.assignRolesForm', $user) }}" class="btn btn-primary">Roles
-                        <i class="bi bi-clipboard2-plus"></i>
+                    <a href="{{ route('users.assignRolesForm', $user) }}" class="btn btn-primary">
+                        Roles <i class="bi bi-clipboard2-plus"></i>
                     </a>
-                    <!-- Button to assign cycles -->
-                    <a href="{{ route('users.assignCyclesForm', $user) }}" class="btn btn-info">Cycle
-                    <i class="bi bi-clipboard2-plus"></i>
+                    <!-- Button to assign Cycles -->
+                    <a href="{{ route('users.assignCyclesForm', $user) }}" class="btn btn-info">
+                        Cycles <i class="bi bi-clipboard2-plus"></i>
+                    </a>
+                    <!-- Button to assign Modules -->
+                    <a href="{{ route('users.assignModulesForm', $user) }}" class="btn btn-success">
+                        Modules <i class="bi bi-clipboard2-plus"></i>
                     </a>
                     <a href="{{ route('users.edit', $user) }}" class="btn btn-warning">
                         <i class="bi bi-pencil-square"></i>
