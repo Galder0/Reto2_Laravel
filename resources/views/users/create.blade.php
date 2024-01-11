@@ -8,14 +8,40 @@
     <div class="container">
         <form action="{{ route('users.store') }}" method="post">
             @csrf
+            @csrf
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
             </div>
 
             <div class="form-group">
+                <label for="surnames">Surnames:</label>
+                <input type="text" name="surnames" id="surnames" class="form-control" value="{{ old('surnames') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="DNI">DNI:</label>
+                <input type="text" name="DNI" id="DNI" class="form-control" value="{{ old('DNI') }}">
+            </div>
+
+            <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direction">Direction:</label>
+                <input type="text" name="direction" id="direction" class="form-control" value="{{ old('direction') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" name="phone_number" id="phone_number" class="form-control" value="{{ old('phone_number') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="fct_dual">FCT Dual:</label>
+                <input type="checkbox" name="fct_dual" id="fct_dual" class="form-check-input" value="1" {{ old('fct_dual') ? 'checked' : '' }}>
             </div>
 
             <div class="form-group">
@@ -28,7 +54,7 @@
                 @endforeach
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <h5><label>Select Cycles</label></h5>
                 @foreach ($cycles as $cycle)
                     <div class="form-check">
@@ -37,6 +63,16 @@
                     </div>
                 @endforeach
             </div>
+
+            <div class="form-group">
+                <h5><label>Select Modules</label></h5>
+                @foreach ($modules as $module)
+                    <div class="form-check">
+                        <input type="checkbox" name="modules[]" id="module_{{ $module->id }}" value="{{ $module->id }}" class="form-check-input">
+                        <label for="module_{{ $module->id }}">{{ $module->name }}</label>
+                    </div>
+                @endforeach
+            </div> -->
 
             <div class="form-group">
                 <label for="department">Department</label>
