@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // Add this line
 use App\Models\Role;
 use App\Models\Cycle;
+use App\Models\Module;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Support\Facades\Hash;
@@ -62,20 +63,60 @@ class UserController extends Controller
         return view('users.assignCycles', compact('user', 'cycles', 'userCycles'));
     }
 
+    
+
     public function assingCycles(Request $request, User $user)
     {
-        // TODOO : the time has to be created or updated on the function.
-        $request->validate([
-            'cycles' => 'required|array',
-        ]);
-    
+        //TODOO contemplate more than one cycle added.
+        // dd($request);
+        // $request->validate([
+        //     'cycles' => 'required|array',
+        // ]);
+        
         DB::transaction(function () use ($request, $user) {
             // Sync cycles for the user
-            $user->cycles()->sync($request->input('cycles'));
+            $cycles = $request->input('cycles');
+            
+            if ($cycles == null){
+                $user->modules()->sync([]);
+            } else {
+                foreach ($cycles as $cycle) {
+                    // Get all module IDs associated with the selected cycles
+                    $moduleIds = DB::table('cycles_modules')
+                    ->whereIn('cycle_id', [$cycle])
+                    ->pluck('module_id');
+    
+                    // Sync user with modules
+                    
+                }
+                $user->modules()->syncWithPivotValues($moduleIds, ['cycle_id'=>intval($cycle)]);
+            }
         });
     
-        return redirect('/admin')->with('success', 'Cycles assigned successfully.');
+        return redirect('/admin')->with('success', 'Cycles and Modules assigned successfully.');
     }
+
+    public function assignModulesForm(User $user)
+{
+    $modules = Module::all();
+    $userModules = $user->modules;
+
+    return view('users.assignModules', compact('user', 'modules', 'userModules'));
+}
+
+public function assignModules(Request $request, User $user)
+{
+    $request->validate([
+        'modules' => 'required|array',
+    ]);
+
+    DB::transaction(function () use ($request, $user) {
+        // Sync modules for the user
+        $user->modules()->sync($request->input('modules'));
+    });
+
+    return redirect('/admin')->with('success', 'Modules assigned successfully.');
+}
 
     
 
@@ -132,48 +173,91 @@ class UserController extends Controller
     }
 
     public function create()
-    {
-        $departments = Department::all();
-        $roles = Role::all();
-        $cycles = Cycle::all(); // Fetch all cycles
+{
+    $departments = Department::all();
+    $roles = Role::all();
+    $cycles = Cycle::all();
+    $modules = Module::all(); // Fetch all modules
 
-        return view('users.create', compact('roles', 'cycles', 'departments'));
-    }
+    return view('users.create', compact('roles', 'cycles', 'departments', 'modules'));
+}
+// public function store(Request $request)
+// {
+//     // Validate the request data
+//     $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|email|unique:users,email|max:255',
+//         'roles' => 'required|array',
+//         'department' => 'nullable|exists:departments,id',
+//         'cycles' => 'array',
+//         'modules' => 'array', // Add validation for modules
+//     ]);
 
-    public function store(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email|max:255',
-            'roles' => 'required|array',
-            'department' => 'nullable|exists:departments,id',
-            'cycles' => 'array',
+//     DB::transaction(function () use ($request) {
+//         // Create a new user with a default password '12341234'
+//         $user = new User([
+//             'name' => $request->input('name'),
+//             'email' => $request->input('email'),
+//             'password' => Hash::make('12341234'),
+//         ]);
+
+//         $user->save();
+
+//         // Sync roles for the user
+//         $user->roles()->sync($request->input('roles'));
+
+//         // Sync cycles for the user
+//         $user->cycles()->sync($request->input('cycles', []));
+
+//         // Sync modules for the user
+//         $user->modules()->sync($request->input('modules', []));
+
+//         // Associate the selected department with the user if provided
+//         $user->department()->associate($request->input('department'));
+//         $user->save();
+//     });
+
+//     return redirect('/admin')->with('success', 'User created successfully with the default password.');
+// }
+
+public function store(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email|max:255',
+        'roles' => 'required|array',
+        'department' => 'nullable|exists:departments,id',
+        'cycles' => 'array',
+        'modules' => 'array', // Add validation for modules
+    ]);
+
+    DB::transaction(function () use ($request) {
+        // Create a new user with a default password '12341234'
+        $user = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make('12341234'),
         ]);
 
-        DB::transaction(function () use ($request) {
-            // Create a new user with a default password '12341234'
-            $user = new User([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => Hash::make('12341234'), // Set the default password here
-            ]);
+        $user->save();
 
-            $user->save();
+        // Sync roles for the user
+        $user->roles()->sync($request->input('roles'));
 
-            // Sync roles for the user
-            $user->roles()->sync($request->input('roles'));
+        // Sync cycles for the user
+        $user->cycles()->sync($request->input('cycles', []));
 
-            // Sync cycles for the user
-            $user->cycles()->sync($request->input('cycles', []));
+        // Sync modules for the user
+        $user->modules()->sync($request->input('modules', []));
 
-            // Associate the selected department with the user if provided
-            $user->department()->associate($request->input('department'));
-            $user->save();
-        });
+        // Associate the selected department with the user if provided
+        $user->department()->associate($request->input('department'));
+        $user->save();
+    });
 
-        return redirect('/admin')->with('success', 'User created successfully with the default password.');
-    }
+    return redirect('/admin')->with('success', 'User created successfully with the default password.');
+}
     
     public function changePasswordForm()
     {
