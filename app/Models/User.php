@@ -8,15 +8,21 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     public function users()
     {
         return $this->belongsToMany(User::class, 'cycles_users');
     }
+
+    public function hasDepartment($department)
+    {
+        return $this->department->id === $department;
+    } 
 
     public function hasRole($role)
     {
@@ -29,14 +35,14 @@ class User extends Authenticatable
 
     }
 
-    public function modules()
-    {
-        return $this->belongsToMany(Module::class, 'modules_cycles_users', 'user_id', 'module_id');
-    }
-
     public function cycles()
     {
         return $this->belongsToMany(Cycle::class, 'modules_cycles_users', 'user_id', 'cycle_id');
+    }
+
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'modules_cycles_users', 'user_id', 'module_id');
     }
 
     
@@ -44,6 +50,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
     /**
      * The attributes that are mass assignable.
      *
