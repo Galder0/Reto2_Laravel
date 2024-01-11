@@ -15,8 +15,12 @@ function setTheme(themeValue) {
     document.querySelector(`[data-bs-theme-value="${themeValue}"]`).classList.add('active');
 }
 
-// Obtener el tema almacenado en localStorage o establecer 'light' como predeterminado
-const storedTheme = localStorage.getItem('theme') || 'light';
+// Obtener el tema almacenado en localStorage o establecer 'light' como predeterminado  
+var storedTheme = localStorage.getItem('theme') || 'light';
+//hack: si no existe la clave o es texto "null", lo forzamos a modo "light"
+if (storedTheme == null ||storedTheme == 'null'){
+    storedTheme = 'light';
+}
 
 // Establecer el tema inicial y marcar como activo el botón correspondiente
 document.documentElement.setAttribute('data-bs-theme', storedTheme);
