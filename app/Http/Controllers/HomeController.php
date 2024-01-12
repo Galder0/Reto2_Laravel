@@ -27,40 +27,48 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $departments = Auth::user()->department->id;
-        $classmates = User::where('department_id', Auth::user()->department_id)
-            ->where('id', '!=', Auth::user()->id)
-            ->get();
-        $userCycles = Auth::user()->cycles;
-        $professorModules = collect();
+        if (Auth::user()->department_id != null) {
+            $departments = Auth::user()->department;
+    
+            $classmates = User::where('department_id', Auth::user()->department_id)
+                ->where('id', '!=', Auth::user()->id)
+                ->get();
+            
+            $userCycles = Auth::user()->cycles;
+            $professorModules = Auth::user()->modules;
+    
+            $moduleIds = $professorModules->pluck('id')->toArray();
+            $cycleIds = $userCycles->pluck('id')->toArray(); // Corregido aquí
+    
+            $students = User::whereHas('roles', function ($query) {
+                $query->where('name', 'student');
+            })->whereHas('cycles.modules', function ($query) use ($moduleIds, $cycleIds) {
+                $query->whereIn('modules.id', $moduleIds)
+                      ->whereIn('cycles.id', $cycleIds); // Asegurarse de que también estén en los ciclos correctos
+            })->get();
+    
+            return view('home', compact('departments', 'classmates', 'professorModules', 'students'));
+        } else {
+            $userCycles = Auth::user()->cycles;
+            
+            foreach ($userCycles as $cycle) {
+                $modules = $cycle->modules;
+            
+                // Para cada módulo, encontrar profesores con ese módulo
+                foreach ($modules as $module) {
+                    $moduleProfessor = User::whereHas('roles', function ($query) {
+                        $query->where('name', 'professor');
+                    })->whereHas('modules', function ($query) use ($module) {
+                        $query->where('id', $module->id);
+                    })->get();
+                }
+            }
 
-        // Recorrer los ciclos y obtener los módulos asociados a cada ciclo
-        foreach ($userCycles as $cycle) {
-            // Obtener los módulos a través de la relación en la tabla pivote cycles_modules
-            $modules = $cycle->modules;
+            // Obtener los ciclos formativos del usuario ordenados de más nuevo a más antiguo
+            $cycles = $userCycles->sortByDesc('created_at');
 
-            // Agregar los módulos a la colección general
-            $professorModules = $professorModules->merge($modules);
+            return view('home', compact('cycles', 'modules', '$moduleProfessors'));
         }
-
-        // Obtener los IDs de los módulos
-        $moduleIds = $professorModules->pluck('id')->toArray();
-
-        // Obtener los IDs de los ciclos
-        $cycleIds = $userCycles->pluck('id')->toArray();
-
-        // Obtener los usuarios que son estudiantes y están asociados a los módulos y ciclos
-        $students = User::whereHas('roles', function ($query) {
-            $query->where('name', 'student');
-        })->whereHas('cycles.modules', function ($query) use ($moduleIds) {
-            // Filtrar por IDs de módulos
-            $query->whereIn('modules.id', $moduleIds);
-        })->whereHas('cycles', function ($query) use ($cycleIds) {
-            // Filtrar por IDs de ciclos
-            $query->whereIn('cycles.id', $cycleIds);
-        })->get();
-
-        return view('home', compact('departments', 'classmates', 'professorModules', 'students'));
     }
 
 }
