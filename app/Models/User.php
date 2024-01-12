@@ -19,11 +19,6 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'cycles_users');
     }
 
-    public function hasDepartment($department)
-    {
-        return $this->department->id === $department;
-    } 
-
     public function hasRole($role)
     {
         return $this->roles->contains('name', $role);
@@ -57,10 +52,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'department_id'
+        'name', 'surnames', 'DNI', 'email', 'direction', 'phone_number', 'fct_dual', 'password', 'department_id',
     ];
 
     /**

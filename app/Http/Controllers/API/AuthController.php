@@ -16,10 +16,14 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // Validate the request data
-        //TODOO add new fields to complete the user
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'surnames' => 'nullable|string|max:255',
+            'DNI' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'direction' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:255',
+            'fct_dual' => 'nullable|boolean',
             'password' => 'required|string|min:8',
             'department_id' => 'required|int',
         ]);
@@ -34,7 +38,12 @@ class AuthController extends Controller
         // Create a new user
         $user = User::create([
             'name' => $request->input('name'),
+            'surnames' => $request->input('surnames'),
+            'DNI' => $request->input('DNI'),
             'email' => $request->input('email'),
+            'direction' => $request->input('direction'),
+            'phone_number' => $request->input('phone_number'),
+            'fct_dual' => $request->input('fct_dual'),
             'password' => Hash::make($request->input('password')),
             'department_id' => $request->input('department_id'),
         ]);
@@ -43,7 +52,12 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'user' => [
                 'name' => $user->name,
+                'surnames' => $user->surnames,
+                'DNI' => $user->DNI,
                 'email' => $user->email,
+                'direction' => $user->direction,
+                'phone_number' => $user->phone_number,
+                'fct_dual' => $user->fct_dual,
                 'department_id' => $user->department_id,
             ],
         ])->setStatusCode(Response::HTTP_CREATED);
