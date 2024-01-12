@@ -35,11 +35,8 @@
                 <h2>Mis Módulos</h2>
                 <!-- Lista de módulos que da -->
                 <div class="accordion" id="accordionModules">
-                    @php
-                        $uniqueModules = $professorModules->unique('id');
-                    @endphp
 
-                    @foreach ($uniqueModules as $module)
+                    @foreach ($professorModules->unique('id') as $module)
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingModule{{ $module->id }}">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseModule{{ $module->id }}" aria-expanded="false" aria-controls="collapseModule{{ $module->id }}">
@@ -65,7 +62,7 @@
         @else
             <p>Alumno</p>
             <div class="accordion" id="cycleAccordion">
-                @foreach ($cycles as $cycle)
+                @foreach ($cycles->unique() as $cycle)
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{ $cycle->id }}">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $cycle->id }}" aria-expanded="true" aria-controls="collapse{{ $cycle->id }}">
@@ -77,10 +74,10 @@
                                 <h3>Módulos</h3>
                                 <ul>
                                     @foreach ($cycle->modules as $module)
-                                        <li>
+                                        <!-- <li>
                                             {{ $module->name }} -
                                             Profesor: {{ $module->professor->name }} ({{ $module->professor->email }})
-                                        </li>
+                                        </li> -->
                                     @endforeach
                                 </ul>
                             </div>
@@ -88,8 +85,9 @@
                     </div>
                 @endforeach
             </div>
+
         @endif
 
-        
+
     </div>
 @endsection

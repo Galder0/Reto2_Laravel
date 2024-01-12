@@ -56,18 +56,20 @@ class HomeController extends Controller
             
                 // Para cada módulo, encontrar profesores con ese módulo
                 foreach ($modules as $module) {
-                    $moduleProfessor = User::whereHas('roles', function ($query) {
+                    $moduleProfessors = User::whereHas('roles', function ($query) {
                         $query->where('name', 'professor');
                     })->whereHas('modules', function ($query) use ($module) {
-                        $query->where('id', $module->id);
+                        $query->where('modules.id', $module->id);
                     })->get();
+                
+                    // Ahora $moduleProfessor contiene los profesores para el módulo actual
                 }
             }
 
             // Obtener los ciclos formativos del usuario ordenados de más nuevo a más antiguo
             $cycles = $userCycles->sortByDesc('created_at');
-
-            return view('home', compact('cycles', 'modules', '$moduleProfessors'));
+           
+            return view('home', compact('cycles', 'modules', 'moduleProfessors'));
         }
     }
 
