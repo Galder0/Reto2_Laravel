@@ -110,6 +110,13 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
 {
+    // Check if the role name is one of the protected roles
+    $protectedRoles = ['admin', 'student', 'teacher'];
+
+    if (in_array($role->name, $protectedRoles)) {
+        return redirect("/admin/roles")->with('error', 'Cannot delete protected role!');
+    }
+
     // Delete the specified role
     $role->delete();
 
