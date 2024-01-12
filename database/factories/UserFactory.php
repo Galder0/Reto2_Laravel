@@ -13,6 +13,9 @@ class UserFactory extends Factory
 
     public function definition()
     {
+        // TODOO apply es_ES language
+        // $this->faker->locale('es_ES');
+        
         return [
             'name' => $this->faker->name,
             'surnames' => $this->faker->lastName,
