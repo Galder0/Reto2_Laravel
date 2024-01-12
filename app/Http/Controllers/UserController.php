@@ -109,6 +109,7 @@ class UserController extends Controller
 
     public function assignModulesForm(User $user)
 {
+    //TODOO Delete modules does not work fully
     $modules = Module::all();
     $userModules = $user->modules;
 

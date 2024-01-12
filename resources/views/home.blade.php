@@ -73,11 +73,11 @@
                             <div class="accordion-body">
                                 <h3>Módulos</h3>
                                 <ul>
-                                    @foreach ($cycle->modules as $module)
-                                        <!-- <li>
+                                    @foreach ($modules as $module)
+                                        <li>
                                             {{ $module->name }} -
-                                            Profesor: {{ $module->professor->name }} ({{ $module->professor->email }})
-                                        </li> -->
+                                            Profesor: {{ $moduleProfessors }} ({{ $moduleProfessors }})
+                                        </li> 
                                     @endforeach
                                 </ul>
                             </div>
