@@ -76,20 +76,21 @@
                                 <div class="collapse" id="cycleCollapse{{ $department->id }}">
                                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                         @if (request()->is('departments*'))
-                                            @forelse($department->users as $user)
+                                            @forelse($department->users->sortByDesc('surnames') as $user)
                                                 <li class="module-item">
                                                     <div class="d-flex justify-content-between">
-                                                    <span>
-                                                        Name: {{ $user->name }}<br>
-                                                        Email: {{ $user->email }}<br>
-                                                        <!-- Telephone: {{ $user->telephone }} -->
-                                                    </span>
+                                                        <span>
+                                                            Surname: {{ $user->surnames }}<br>
+                                                            Name: {{ $user->name }}<br>
+                                                            Email: {{ $user->email }}<br>
+                                                            Phone Number: {{ $user->phone_number }}<br>
+                                                        </span>
                                                     </div>
                                                 </li>
                                                 <hr class="module-divider">
                                             @empty
                                                 <li><p class="fs-6">No users for this department.</p></li>
-                                            @endforelse
+                                            @endforelse                                    
                                         @else
                                             @forelse($department->cycles as $cycle)
                                                 <li class="module-item">

@@ -68,7 +68,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                </td>
+                            </td>
                         </tr>
 
                         <!-- Collapsible List for Each Cycle -->

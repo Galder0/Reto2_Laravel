@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Department;
 use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
@@ -59,6 +60,12 @@ class UserSeeder extends Seeder
         // Create 80 users with the 'teacher' role
         User::factory(80)->create()->each(function ($user) use ($teacherRole) {
             $user->roles()->attach($teacherRole);
+
+            // Assign a random department to users with the teacher role
+            if ($user->hasRole('teacher')) {
+                $department = Department::all()->random();
+                $user->department()->associate($department)->save();
+            }
         });
     }
 }

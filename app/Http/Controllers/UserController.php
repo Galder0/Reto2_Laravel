@@ -24,6 +24,8 @@ class UserController extends Controller
         $query->where('name', 'like', "%$search%");
     }
 
+    $query->orderBy('surnames');
+    
     $users = $query->paginate(20);
 
     return view('users.index', compact('users'));
@@ -67,29 +69,34 @@ class UserController extends Controller
 
     public function assingCycles(Request $request, User $user)
     {
-        //TODOO contemplate more than one cycle added.
-        // dd($request);
-        // $request->validate([
-        //     'cycles' => 'required|array',
-        // ]);
-        
+        // Validate the form data
+        $request->validate([
+            'cycles' => 'array', // Allow null or array
+        ]);
+
         DB::transaction(function () use ($request, $user) {
-            // Sync cycles for the user
+            // Get selected cycles from the form
             $cycles = $request->input('cycles');
-            
-            if ($cycles == null){
-                $user->modules()->sync([]);
+
+            // Remove existing data if no cycles are selected
+            if ($cycles === null) {
+                $user->modules()->detach();
             } else {
+                // Loop through each selected cycle
                 foreach ($cycles as $cycle) {
-                    // Get all module IDs associated with the selected cycles
+                    // Get all module IDs associated with the selected cycle
                     $moduleIds = DB::table('cycles_modules')
-                    ->whereIn('cycle_id', [$cycle])
-                    ->pluck('module_id');
-    
-                    // Sync user with modules
-                    
+                        ->where('cycle_id', $cycle)
+                        ->pluck('module_id');
+
+                    // Sync user with modules and set the cycle_id pivot value
+                    $syncData = [];
+                    foreach ($moduleIds as $moduleId) {
+                        $syncData[$moduleId] = ['cycle_id' => $cycle];
+                    }
+
+                    $user->modules()->sync($syncData);
                 }
-                $user->modules()->syncWithPivotValues($moduleIds, ['cycle_id'=>intval($cycle)]);
             }
         });
     
@@ -139,33 +146,45 @@ public function assignModules(Request $request, User $user)
         $cycles = Cycle::all();
         $userRoles = $user->roles;
         $userCycles = $user->cycles;
+        $departments = Department::all();
 
-        return view('users.edit', compact('user', 'roles', 'cycles', 'userRoles', 'userCycles'));
+        return view('users.edit', compact('user', 'roles', 'cycles', 'userRoles', 'userCycles', 'departments'));
     }
     public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'roles' => 'required|array',
-            'cycles' => 'nullable|array', // Add this line for cycle validation
+{
+    // Validate the request data
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'roles' => 'required|array',
+        'department' => 'nullable|exists:departments,id',
+        'cycles' => 'array',
+        'modules' => 'array', // Add validation for modules
+    ]);
+
+    DB::transaction(function () use ($request, $user) {
+        // Update user details
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
         ]);
 
-        DB::transaction(function () use ($request, $user) {
-            $user->update([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-            ]);
+        // Sync roles for the user
+        $user->roles()->sync($request->input('roles'));
 
-            // Sync roles for the user
-            $user->roles()->sync($request->input('roles'));
+        // Sync cycles for the user
+        $user->cycles()->sync($request->input('cycles', []));
 
-            // Sync cycles for the user
-            $user->cycles()->sync($request->input('cycles', []));
-        });
+        // Sync modules for the user
+        $user->modules()->sync($request->input('modules', []));
 
-        return redirect('/admin')->with('success', 'User updated successfully.');
-    }
+        // Associate the selected department with the user if provided
+        $user->department()->associate($request->input('department'));
+        $user->save();
+    });
+
+    return redirect('/admin')->with('success', 'User updated successfully.');
+}
     
     public function show(User $user)
     {
