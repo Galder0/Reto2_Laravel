@@ -92,7 +92,11 @@ class UserController extends Controller
                     // Sync user with modules and set the cycle_id pivot value
                     $syncData = [];
                     foreach ($moduleIds as $moduleId) {
-                        $syncData[$moduleId] = ['cycle_id' => $cycle];
+                        $syncData[$moduleId] = [
+                            'cycle_id' => $cycle,
+                            'created_at' => now(),
+                        ];
+                        
                     }
 
                     $user->modules()->sync($syncData);
