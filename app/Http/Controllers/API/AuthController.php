@@ -73,11 +73,9 @@ class AuthController extends Controller
                 'message' => 'Username or password incorrect',
             ])->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
-    
+        //This may have to change
         return response()->json([
-            'status' => 'success',
-            'message' => 'User logged in successfully',
-            'name' => $user->name,
+            'email' => $user->email,
             'token' => $user->createToken($request->device_name)->plainTextToken,
         ]);
     }

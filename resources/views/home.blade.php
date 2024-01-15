@@ -65,7 +65,7 @@
                 @foreach ($cycles->unique() as $cycle)
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{ $cycle->id }}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $cycle->id }}" aria-expanded="true" aria-controls="collapse{{ $cycle->id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $cycle->id }}" aria-expanded="true" aria-controls="collapse{{ $cycle->id }}">
                                 {{ $cycle->name }}
                             </button>
                         </h2>
@@ -76,7 +76,9 @@
                                     @foreach ($modules as $module)
                                         <li>
                                             {{ $module->name }} -
-                                            Profesor: {{ $moduleProfessors }} ({{ $moduleProfessors }})
+                                                @foreach ($moduleProfessors->unique('id') as $professor)
+                                                    Profesor: {{ $professor->name }} ({{ $professor->email }})</Profesor:>
+                                                @endforeach
                                         </li> 
                                     @endforeach
                                 </ul>

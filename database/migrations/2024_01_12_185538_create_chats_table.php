@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             //TODOO plubic or private
-            $table->boolean('private');
+            $table->boolean('private')->default(0)->nullable();
             $table->timestamps();
         });
     }
