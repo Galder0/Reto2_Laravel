@@ -52,8 +52,13 @@
 <!-- Button to create new users -->
 <div class="d-flex align-items-center">
     <h2 class="card-title">Users</h2>
-    <a href="{{ route('users.create') }}" class="btn btn-primary"><i class="bi bi-person-plus"></i></a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createUserModal">
+        <i class="bi bi-person-plus"></i>
+    </button>
 </div>
+
+<!-- Include the modal component -->
+@include('components.create-user-modal')
 
 <!-- Add space between tables -->
 <div class="my-4"></div>

@@ -196,14 +196,14 @@ public function assignModules(Request $request, User $user)
         return view('users.show', compact('user'));
     }
 
-    public function create()
+    public function create(User $user)
 {
     $departments = Department::all();
     $roles = Role::all();
     $cycles = Cycle::all();
     $modules = Module::all(); // Fetch all modules
 
-    return view('users.create', compact('roles', 'cycles', 'departments', 'modules'));
+    return view('users.create', compact('user', 'roles', 'cycles', 'departments', 'modules'));
 }
 // public function store(Request $request)
 // {
@@ -277,6 +277,9 @@ public function store(Request $request)
 
         // Associate the selected department with the user if provided
         $user->department()->associate($request->input('department'));
+
+        $user->fct_dual = $request->input('fct_dual', false);
+
         $user->save();
     });
 

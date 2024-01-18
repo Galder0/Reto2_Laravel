@@ -14,7 +14,21 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    public function users()
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     // Listen for the 'created' event
+    //     static::created(function ($user) {
+    //         // Check if roles are specified, if not, assign the 'user' role
+    //         if (!$user->roles || $user->roles->isEmpty()) {
+    //             $user->roles()->attach(Role::where('name', 'student')->first()->id);
+    //         }
+    //     });
+    // }
+
+    public function users() 
     {
         return $this->belongsToMany(User::class, 'cycles_users');
     }

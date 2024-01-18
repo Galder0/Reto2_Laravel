@@ -87,7 +87,7 @@ class HomeController extends Controller
             // Ordenar los ciclos formativos del usuario de más nuevo a más antiguo
             $cycles = $userCycles->sortByDesc('created_at');
 
-            return view('home', compact('cycles', 'moduleProfessors'));
+            return view('home', compact('cycles', 'modules' ,'moduleProfessors'));
         }
     }
 }
