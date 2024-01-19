@@ -72,7 +72,6 @@
             <th scope="col">Department</th>
             <th scope="col">Roles</th>
             <th scope="col">Actions</th>
-            
         </tr>
     </thead>
     <tbody>
@@ -98,20 +97,32 @@
                 </td>
                 <td>
                     <!-- Button to assign Roles -->
-                    <a href="{{ route('users.assignRolesForm', $user) }}" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignRolesModal{{$user->id}}">
                         Roles <i class="bi bi-clipboard2-plus"></i>
-                    </a>
+                    </button>
+
+                    @include('components.assingRoles-user-modal')
+
                     <!-- Button to assign Cycles -->
-                    <a href="{{ route('users.assignCyclesForm', $user) }}" class="btn btn-info">
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#assignCyclesModal{{$user->id}}">
                         Cycles <i class="bi bi-clipboard2-plus"></i>
-                    </a>
+                    </button>
+
+                    @include('components.assignCycles-user-modal') 
+                    
                     <!-- Button to assign Modules -->
-                    <a href="{{ route('users.assignModulesForm', $user) }}" class="btn btn-success">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#assignModulesModal{{$user->id}}">
                         Modules <i class="bi bi-clipboard2-plus"></i>
-                    </a>
-                    <a href="{{ route('users.edit', $user) }}" class="btn btn-warning">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
+                    </button>
+
+                    @include('components.assingModules-user-modal')
+
+                    <!-- Button to Edit User -->
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editUserModal{{$user->id}}">
+                        Edit <i class="bi bi-clipboard2-plus"></i>
+                    </button>
+
+                    @include('components.edit-user-modal')
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ $user->id }}">
                         <i class="bi bi-trash"></i>
                     </button>

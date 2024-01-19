@@ -5,7 +5,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="createUserModalLabel">Create User</h5>
+                <h5 class="modal-title" id="createUserModalLabel">Create New User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
