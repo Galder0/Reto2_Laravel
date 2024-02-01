@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             //TODOO plubic or private
             $table->boolean('private')->default(0)->nullable();
             $table->timestamps();

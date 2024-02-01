@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="container">
-        <h2>Cycle Details</h2>
+        <h2>{{ __("messages.cycle details") }}</h2>
 
         <!-- Navigation Tabs -->
         <ul class="nav nav-tabs" id="cycleTabs">
             <li class="nav-item">
-                <a class="nav-link active" id="cycleDetailsTab" data-bs-toggle="tab" href="#cycleDetails">Cycle Details</a>
+                <a class="nav-link active" id="cycleDetailsTab" data-bs-toggle="tab" href="#cycleDetails">{{ __("messages.cycle details") }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="cyclePeopleTab" data-bs-toggle="tab" href="#cyclePeople">People in Cycle</a>
+                <a class="nav-link" id="cyclePeopleTab" data-bs-toggle="tab" href="#cyclePeople">{{ __("messages.cycle people") }}</a>
             </li>
         </ul>
 
@@ -18,13 +18,13 @@
         <div class="tab-content">
             <!-- Cycle Details Tab -->
             <div class="tab-pane fade show active" id="cycleDetails">
-                <p><strong>ID:</strong> {{ $cycle->id }}</p>
-                <p><strong>Name:</strong> {{ $cycle->name }}</p>
-                <p><strong>Code:</strong> {{ $cycle->code }}</p>
+                <p><strong>{{ __("messages.id") }}:</strong> {{ $cycle->id }}</p>
+                <p><strong>{{ __("messages.name") }}:</strong> {{ $cycle->name }}</p>
+                <p><strong>{{ __("messages.code") }}:</strong> {{ $cycle->code }}</p>
 
                 <!-- Add more details as needed -->
                 <div class="form-group">
-                    <h3>Modules:</h3>
+                    <h3>{{ __("messages.modules") }}:</h3>
                     @foreach ($cycle->modules->sortBy('year') as $module)
                         <div class="module-item">
                             <h5>
@@ -34,10 +34,10 @@
                             </h5>
                             <div class="module-details">
                                 <div>
-                                    <label>Hours:</label> {{ $module->numberhours }}
+                                    <label>{{ __("messages.hours") }}:</label> {{ $module->numberhours }}
                                 </div>
                                 <div>
-                                    <label>Year:</label> {{ $module->year }}
+                                    <label>{{ __("messages.year") }}:</label> {{ $module->year }}
                                 </div>
                             </div>
                             <hr class="module-divider">
@@ -48,9 +48,9 @@
 
             <!-- Participants Tab -->
             <div class="tab-pane fade" id="cyclePeople">
-                <h3>Participants</h3>
+                <h3>{{ __("messages.participants") }}</h3>
                 @if ($usersInCycle->isNotEmpty())
-                    <h4>Teachers</h4>
+                    <h4>{{ __("messages.teachers") }}</h4>
                     <ul>
                         @foreach ($usersInCycle->filter(function ($user) {
                             return $user->roles->contains('name', 'teacher');
@@ -59,7 +59,7 @@
                         @endforeach
                     </ul>
 
-                    <h4>Students</h4>
+                    <h4>{{ __("messages.students") }}</h4>
                     <ul>
                         @foreach ($usersInCycle->filter(function ($user) {
                             return $user->roles->contains('name', 'student');
@@ -68,13 +68,12 @@
                         @endforeach
                     </ul>
                 @else
-                    <p>This cycle has no people signed up.</p>
+                    <p>{{ __("messages.no people signed up") }}</p>
                 @endif
             </div>
         </div>
 
-        <a href="{{ route('cycles.index') }}" class="btn btn-secondary">Back to Cycle</a>
-        <a href="{{ route('cycles.edit', $cycle) }}" class="btn btn-warning">Edit Cycle</a>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __("messages.back to cycle") }}</a>
     </div>
 
     <script>

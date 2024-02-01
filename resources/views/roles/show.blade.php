@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="container">
-        <h2>Role Details</h2>
+        <h2>{{ __("messages.role details") }}</h2>
 
-        <p><strong>ID:</strong> {{ $role->id }}</p>
-        <p><strong>Name:</strong> {{ $role->name }}</p>
+        <p><strong>{{ __("messages.id") }}:</strong> {{ $role->id }}</p>
+        <p><strong>{{ __("messages.name") }}:</strong> {{ $role->name }}</p>
 
         <!-- Add more details as needed -->
 
-        <a href="{{ route('roles.index') }}" class="btn btn-secondary">Back to Roles</a>
-        <a href="{{ route('roles.edit', $role) }}" class="btn btn-warning">Edit Role</a>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __("messages.back to roles") }}</a>
+
         <!-- Add delete button with a form if needed -->
     </div>
 @endsection

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Edit Department</h2>
+        <h2>{{ __("messages.edit department") }}</h2>
 
         @if(session('success'))
             <div class="alert alert-success">
@@ -25,13 +25,13 @@
             @method('PUT')
 
             <div class="form-group">
-                <label for="name">Department Name:</label>
+                <label for="name">{{ __("messages.department name") }}:</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $department->name) }}" required>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Update Department</button>
-                <a href="{{ redirect('/admin/departments')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">{{ __("messages.update department") }}</button>
+                <a href="{{ redirect('/admin/departments')->getTargetUrl() }}" class="btn btn-secondary">{{ __("messages.cancel") }}</a>
             </div>
         </form>
     </div>

@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
 {
-    $users = User::paginate(20); // You can specify the number of items per page (e.g., 10)
+    $users = User::paginate(50); // You can specify the number of items per page (e.g., 10)
 
     return response()->json($users, 200);
 }

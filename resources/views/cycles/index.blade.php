@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Cycles</h2>
+        <h2>{{ __("messages.cycles") }}</h2>
         @if (Request::is('admin/cycles*'))
             <a href="{{ route('cycles.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i>
@@ -14,9 +14,9 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Code</th>
-                        <th>Actions</th>
+                        <th>{{ __("messages.name") }}</th>
+                        <th>{{ __("messages.code") }}</th>
+                        <th>{{ __("messages.actions") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,20 +48,20 @@
                                         <div class="modal-dialog" cycle="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">{{ __("messages.confirm deletion") }}</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure you want to delete this cycle?
+                                                    {{ __("messages.are you sure you want to delete this cycle?") }}
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("messages.cancel") }}</button>
                                                     <form action="{{ route('cycles.destroy', $cycle) }}" method="post" style="display:inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                        <button type="submit" class="btn btn-danger">{{ __("messages.delete") }}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -83,10 +83,10 @@
                                             <li class="module-item">
                                                 <div class="d-flex justify-content-between">
                                                     <a href="{{ route('modules.show', $module) }}" class="link-body-emphasis d-inline-flex rounded fs-6">
-                                                        Module: {{ $module->name }}
+                                                        {{ __("messages.module") }}: {{ $module->name }}
                                                     </a>
                                                     <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">
-                                                        Hours: {{ $module->numberhours }} h
+                                                        {{ __("messages.hours") }}: {{ $module->numberhours }} h
                                                     </span>
                                                 </div>
                                                 @php
@@ -95,14 +95,14 @@
                                             </li>
                                             <hr class="module-divider">
                                         @empty
-                                            <li><p class="fs-6">No modules for this cycle.</p></li>
+                                            <li><p class="fs-6">{{ __("messages.no modules for this cycle.") }}</p></li>
                                         @endforelse
 
                                         @if($totalHours > 0)
                                             <li>
                                                 <div class="d-flex justify-content-between">
                                                     <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">
-                                                        Total Time:
+                                                        {{ __("messages.total time") }}:
                                                     </span>
                                                     <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">
                                                         {{ $totalHours }} h
@@ -118,7 +118,7 @@
                 </tbody>
             </table>
         @else
-            <p>No cycles found.</p>
+            <p>{{ __("messages.no cycles found.") }}</p>
         @endif
     </div>
 

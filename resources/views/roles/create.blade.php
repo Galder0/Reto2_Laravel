@@ -1,6 +1,6 @@
 <!-- resources/views/roles/create.blade.php -->
 
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
@@ -8,7 +8,7 @@
 
         @if(session('success'))
             <div class="alert alert-success">
-                {{ session('success') }}
+                {{ __("messages.success") }}
             </div>
         @endif
 
@@ -16,13 +16,13 @@
             @csrf
 
             <div class="form-group">
-                <label for="name">Role Name:</label>
+                <label for="name">{{ __("messages.name") }}:</label>
                 <input type="text" name="name" id="name" class="form-control" required>
             </div>
 
             <!-- Add other form fields as needed -->
 
-            <button type="submit" class="btn btn-primary">Create Role</button>
+            <button type="submit" class="btn btn-primary">{{ __("messages.create role") }}</button>
             
         </form>
     </div>

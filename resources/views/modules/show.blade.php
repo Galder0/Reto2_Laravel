@@ -2,17 +2,17 @@
 
 @section('content')
     <div class="container">
-        <h2>Module Details</h2>
+        <h2>{{ __("messages.module details") }}</h2>
 
-        <p><strong>ID:</strong> {{ $module->id }}</p>
-        <p><strong>Name:</strong> {{ $module->name }}</p>
-        <p><strong>Code:</strong> {{ $module->code }}</p>
-        <p><strong>Number of hours:</strong> {{ $module->numberhours }}</p>
-        <p><strong>Year:</strong> {{ $module->year }}</p>
+        <p><strong>{{ __("messages.id") }}:</strong> {{ $module->id }}</p>
+        <p><strong>{{ __("messages.name") }}:</strong> {{ $module->name }}</p>
+        <p><strong>{{ __("messages.code") }}:</strong> {{ $module->code }}</p>
+        <p><strong>{{ __("messages.number of hours") }}:</strong> {{ $module->numberhours }}</p>
+        <p><strong>{{ __("messages.year") }}:</strong> {{ $module->year }}</p>
 
         <!-- Display cycles where the module is used -->
         <div class="mb-4">
-            <h3>Used in Cycles:</h3>
+            <h3>{{ __("messages.used in cycles") }}:</h3>
             @if ($module->cycles->isNotEmpty())
                 <ul>
                     @foreach ($module->cycles as $cycle)
@@ -24,14 +24,12 @@
                     @endforeach
                 </ul>
             @else
-                <p>This module is not used in any cycles.</p>
+                <p>{{ __("messages.this module is not used in any cycles.") }}</p>
             @endif
         </div>
 
         <!-- Add more details as needed -->
 
-        <a href="{{ route('modules.index') }}" class="btn btn-secondary">Back to Module</a>
-        <a href="{{ route('modules.edit', $module) }}" class="btn btn-warning">Edit Module</a>
-        
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __("messages.back to module") }}</a>
     </div>
 @endsection

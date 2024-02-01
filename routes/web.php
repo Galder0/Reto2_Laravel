@@ -5,12 +5,13 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('language/{locale}', function ($locale) {
+    app()->setLocale($locale);
+    session()->put('locale', $locale);
+    return redirect()->back();
+})->name('set_language');
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->middleware(['admin'])->group(function () {
@@ -87,4 +88,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/set_language/{language}', LanguageController::class)->name('set_language');
+// Route::get('/locale/{locale}', function (string $locale) {
+//     if (! in_array($locale, ['en', 'es', 'eus'])) {
+//         abort(400);
+//     }
+
+//     App::setLocale($locale);
+
+//     return redirect()->back();
+// })->name('set_locale');

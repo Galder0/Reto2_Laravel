@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {
-    public function __invoke($language)
+    public function changeLang($language)
     {
-        // Check if the selected language is in the supported locales
-        if (in_array($language, config('app.locales'))) {
+        // Get the supported locales from the configuration
+        $supportedLocales = config('app.locales');
+
+        // Check if the supported locales is an array
+        if (is_array($supportedLocales) && in_array($language, $supportedLocales)) {
             // Set the application locale
             App::setLocale($language);
 

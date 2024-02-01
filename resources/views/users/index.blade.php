@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Usuarios</h2>
+        <h2>{{ __("messages.users") }}</h2>
 
         @if (Request::is('admin/users*'))
             <!-- Add any admin-specific buttons or actions here -->
@@ -12,10 +12,10 @@
             <table class="table mt-3">
                 <thead>
                     <tr>
-                        <th>Apellido</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
+                        <th>{{ __("messages.surname") }}</th>
+                        <th>{{ __("messages.name") }}</th>
+                        <th>{{ __("messages.email") }}</th>
+                        <th>{{ __("messages.phone number") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,17 +30,17 @@
                 </tbody>
             </table>
         @else
-            <p>No se encontraron usuarios.</p>
+            <p>{{ __("messages.no users found.") }}</p>
         @endif
     </div>
 
     <div class="pagination">
     @if ($users->onFirstPage())
-        <span class="disabled btn">First</span>
-        <span class="disabled btn">Previous</span>
+        <span class="disabled btn">{{ __("messages.first") }}</span>
+        <span class="disabled btn">{{ __("messages.previous") }}</span>
     @else
-        <a href="{{ $users->url(1) }}" class="btn">First</a>
-        <a href="{{ $users->previousPageUrl() }}" rel="prev" class="btn">Previous</a>
+        <a href="{{ $users->url(1) }}" class="btn">{{ __("messages.first") }}</a>
+        <a href="{{ $users->previousPageUrl() }}" rel="prev" class="btn">{{ __("messages.previous") }}</a>
     @endif
 
     @php
@@ -56,11 +56,11 @@
     @endfor
 
     @if ($users->hasMorePages())
-        <a href="{{ $users->nextPageUrl() }}" rel="next" class="btn">Next</a>
-        <a href="{{ $users->url($lastPage) }}" class="btn">Last</a>
+        <a href="{{ $users->nextPageUrl() }}" rel="next" class="btn">{{ __("messages.next") }}</a>
+        <a href="{{ $users->url($lastPage) }}" class="btn">{{ __("messages.last") }}</a>
     @else
-        <span class="disabled btn">Next</span>
-        <span class="disabled btn">Last</span>
+        <span class="disabled btn">{{ __("messages.next") }}</span>
+        <span class="disabled btn">{{ __("messages.last") }}</span>
     @endif
 </div>
 

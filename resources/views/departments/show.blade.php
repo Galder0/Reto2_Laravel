@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="container">
-        <h2>Department Details</h2>
+        <h2>{{ __("messages.department details") }}</h2>
 
-        <p>ID: {{ $department->id }}</p>
-        <p>Name: {{ $department->name }}</p>
+        <p>{{ __("messages.id") }}: {{ $department->id }}</p>
+        <p>{{ __("messages.name") }}: {{ $department->name }}</p>
 
-        <h3>Cycles:</h3>
+        <h3>{{ __("messages.cycles") }}:</h3>
         @if($department->cycles->isEmpty())
-            <p>No cycles associated with this department.</p>
+            <p>{{ __("messages.no cycles associated with this department.") }}</p>
         @else
             <ul>
                 @foreach($department->cycles as $cycle)
@@ -19,7 +19,6 @@
                 @endforeach
             </ul>
         @endif
-
-        <a href="{{ route('departments.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __("messages.back") }}</a>
     </div>
 @endsection

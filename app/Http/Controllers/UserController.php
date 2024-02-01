@@ -10,6 +10,8 @@ use App\Models\Module;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
@@ -247,20 +249,29 @@ public function assignModules(Request $request, User $user)
 public function store(Request $request)
 {
     // Validate the request data
-    $request->validate([
+    $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email|max:255',
+        'phone_number' => 'required|string|max:20', // Add validation for phone_number
         'roles' => 'required|array',
-        'department' => 'nullable|exists:departments,id',
+        'department' => 'required_if:roles,student|exists:departments,id',
         'cycles' => 'array',
         'modules' => 'array', // Add validation for modules
     ]);
+    
+    
+    if ($validator->fails()) {
+        return redirect('/admin')
+            ->withErrors($validator)
+            ->withInput();
+    }
 
     DB::transaction(function () use ($request) {
         // Create a new user with a default password '12341234'
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'), // Add phone_number field
             'password' => Hash::make('12341234'),
         ]);
 
@@ -285,6 +296,7 @@ public function store(Request $request)
 
     return redirect('/admin')->with('success', 'User created successfully with the default password.');
 }
+
     
     public function changePasswordForm()
     {

@@ -1,9 +1,8 @@
 @extends(Request::is('admin/departments*') ? 'layouts.admin' : 'layouts.app')
 
-
 @section('content')
     <div class="container">
-        <h2>Departments</h2>
+        <h2>{{ __("messages.departments") }}</h2>
 
         @if (Request::is('admin/departments*'))
             <a href="{{ route('departments.create') }}" class="btn btn-primary">
@@ -15,9 +14,9 @@
             <table class="table mt-3">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Actions</th>
+                        <th>{{ __("messages.id") }}</th>
+                        <th>{{ __("messages.name") }}</th>
+                        <th>{{ __("messages.actions") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,20 +47,20 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">{{ __("messages.confirm deletion") }}</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure you want to delete this department?
+                                                    {{ __("messages.are you sure you want to delete this department?") }}
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("messages.cancel") }}</button>
                                                     <form action="{{ route('departments.destroy', $department) }}" method="post" style="display:inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                        <button type="submit" class="btn btn-danger">{{ __("messages.delete") }}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -80,28 +79,28 @@
                                                 <li class="module-item">
                                                     <div class="d-flex justify-content-between">
                                                         <span>
-                                                            Surname: {{ $user->surnames }}<br>
-                                                            Name: {{ $user->name }}<br>
-                                                            Email: {{ $user->email }}<br>
-                                                            Phone Number: {{ $user->phone_number }}<br>
+                                                            {{ __("messages.surname") }}: {{ $user->surnames }}<br>
+                                                            {{ __("messages.name") }}: {{ $user->name }}<br>
+                                                            {{ __("messages.email") }}: {{ $user->email }}<br>
+                                                            {{ __("messages.phone number") }}: {{ $user->phone_number }}<br>
                                                         </span>
                                                     </div>
                                                 </li>
                                                 <hr class="module-divider">
                                             @empty
-                                                <li><p class="fs-6">No users for this department.</p></li>
+                                                <li><p class="fs-6">{{ __("messages.no users for this department.") }}</p></li>
                                             @endforelse                                    
                                         @else
                                             @forelse($department->cycles as $cycle)
                                                 <li class="module-item">
                                                     <div class="d-flex justify-content-between">
                                                         <span><a href="{{ route('cycles.show', $cycle) }}" class="link-body-emphasis d-inline-flex rounded fs-6">{{ $cycle->name }}</a></span>
-                                                        <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">Code: {{ $cycle->code }}</span>
+                                                        <span class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-6">{{ __("messages.code") }}: {{ $cycle->code }}</span>
                                                     </div>
                                                 </li>
                                                 <hr class="module-divider">
                                             @empty
-                                                <li><p class="fs-6">No cycles for this department.</p></li>
+                                                <li><p class="fs-6">{{ __("messages.no cycles for this department.") }}</p></li>
                                             @endforelse
                                         @endif
                                     </ul>
@@ -113,7 +112,7 @@
                 </tbody>
             </table>
         @else
-            <p>No departments found.</p>
+            <p>{{ __("messages.no departments found.") }}</p>
         @endif
     </div>
 

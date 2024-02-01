@@ -29,27 +29,21 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/admin/#') }}">{{ config('name', 'a') }}</a>
+                            
                         </li>
-                        <!-- Language Switcher -->
-                        <!-- <li class="nav-item">
-                            <a href="{{ route('set_language', 'en') }}" class="btn btn-link">English</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('set_language', 'es') }}" class="btn btn-link">Español</a>
-                        </li> -->
+                        
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
                     @guest
                         @if (Route::has('login'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{__("messages.login")}}</a>
                             </li>
                         @endif
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="nav-link" href="{{ route('register') }}">{{__("messages.register")}}</a>
                             </li>
                         @endif
                     @else
@@ -61,11 +55,11 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('changePassword.form') }}">
-                                    {{ __('Change Password') }}
+                                    {{__("messages.changePassword")}}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{__("messages.logout")}}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
@@ -73,6 +67,17 @@
                             </div>
                         </li>
                     @endguest
+                    <!-- Language Switch Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{__("messages.language")}}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item" href="{{ route('set_language', ['locale' => 'en']) }}">{{__("messages.english")}}</a></li>
+                            <li><a class="dropdown-item" href="{{ route('set_language', ['locale' => 'es']) }}">{{__("messages.spanish")}}</a></li>
+                            <li><a class="dropdown-item" href="{{ route('set_language', ['locale' => 'eus']) }}">{{__("messages.basque")}}</a></li>
+                        </ul>
+                    </div>
                     </ul>
                 </div>
             </div>
@@ -81,32 +86,19 @@
         <!-- Offcanvas Sidebar -->
         <div class="offcanvas offcanvas-start" id="sidebarOffcanvas">
             <div class="offcanvas-header">
-                <h1 class="offcanvas-title">Navbar Links</h1>
+                <h1 class="offcanvas-title">{{__("messages.navbar links")}}</h1>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
             </div>
             <div class="offcanvas-body">
                 <ul class="nav flex-column">
                     <!-- Navbar Links -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#') }}">A</a>
+                        
                     </li>
-                    <!-- Language Switcher -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('set_language', 'en') }}" >English</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('set_language', 'es') }}" >Español</a>
-                    </li>
-                    <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                        @endif
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{__("messages.login")}}</a>
                             </li>
                         @endif
                     @else
@@ -119,7 +111,7 @@
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{__("messages.logout")}}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
@@ -127,20 +119,31 @@
                             </div>
                         </li>
                     @endguest
+                    <!-- Language Switch Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{__("messages.language")}}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item" href="{{ route('set_language', ['locale' => 'en']) }}">{{__("messages.english")}}</a></li>
+                            <li><a class="dropdown-item" href="{{ route('set_language', ['locale' => 'es']) }}">{{__("messages.spanish")}}</a></li>
+                            <li><a class="dropdown-item" href="{{ route('set_language', ['locale' => 'eus']) }}">{{__("messages.basque")}}</a></li>
+                        </ul>
+                    </div>
                     <!-- Sidebar Links -->
                     <hr>
-                    <h2 class="offcanvas-title">Admin Links</h2>
+                    <h2 class="offcanvas-title">{{__("messages.admin links")}}</h2>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin" id="dashboard-link"><i class="bi bi-house-fill"></i> Dashboard</a>
+                        <a class="nav-link" href="/admin" id="dashboard-link"><i class="bi bi-house-fill"></i>{{__("messages.dashboard")}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/roles" id="roles-link"><i class="bi bi-house-fill"></i> Roles</a>
+                        <a class="nav-link" href="/admin/roles" id="roles-link"><i class="bi bi-house-fill"></i> {{__("messages.roles")}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/cycles" id="cycles-link"><i class="bi bi-house-fill"></i> Cycles</a>
+                        <a class="nav-link" href="/admin/cycles" id="cycles-link"><i class="bi bi-house-fill"></i> {{__("messages.cycles")}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/departments" id="departments-link"><i class="bi bi-buildings-fill"></i> Departments</a>
+                        <a class="nav-link" href="/admin/departments" id="departments-link"><i class="bi bi-buildings-fill"></i> {{__("messages.departments")}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/modules" id="modules-link"><i class="bi bi-house-fill"></i> Modules</a>
@@ -156,19 +159,19 @@
                     <div class="position-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin"><i class="bi bi-house-fill">Dashboard</i></a>
+                                <a class="nav-link" href="/admin"><i class="bi bi-house-fill">{{__("messages.dashboard")}}</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/roles"><i class="bi bi-clipboard2-fill">Roles</i></a>
+                                <a class="nav-link" href="/admin/roles"><i class="bi bi-clipboard2-fill">{{__("messages.roles")}}</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/cycles"><i class="bi bi-mortarboard-fill">Cycles</i></a>
+                                <a class="nav-link" href="/admin/cycles"><i class="bi bi-mortarboard-fill">{{__("messages.cycles")}}</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/departments"><i class="bi bi-buildings-fill">Departments</i></a>
+                                <a class="nav-link" href="/admin/departments"><i class="bi bi-buildings-fill">{{__("messages.departments")}}</i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/modules"><i class="bi bi-book-half">Modules</i></a>
+                                <a class="nav-link" href="/admin/modules"><i class="bi bi-book-half">{{__("messages.modules")}}</i></a>
                             </li>
                         </ul>
                     </div>
@@ -190,13 +193,13 @@
                     <li>
                         <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
                         <i class="bi bi-sun-fill"></i>
-                            Light
+                            {{__("messages.light")}}
                         </button>
                     </li>
                     <li>
                         <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
                         <i class="bi bi-moon-stars-fill"></i>
-                            Dark
+                            {{__("messages.dark")}}
                         </button>
                     </li>
                 </ul>

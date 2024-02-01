@@ -1,0 +1,13 @@
+{
+    "Dashboard": "Tablero",
+    "Total Students": "Total de Estudiantes",
+    "total_staff": "Total de Personal",
+    "total_departments": "Total de Departamentos",
+    "total_cycles": "Total de Ciclos",
+    "total_users_without_role": "Total de Usuarios sin Rol",
+    "total_modules": "Total de Módulos",
+    "success_message": "Mensaje de Éxito",
+    "errors": "Errores",
+    "users": "Usuarios",
+    "create_new_users": "Crear Nuevos Usuarios"
+}

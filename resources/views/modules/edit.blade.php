@@ -25,31 +25,31 @@
             @method('PUT')
 
             <div class="form-group">
-                <label for="name">Module Name:</label>
+                <label for="name">{{ __("messages.module name") }}:</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $module->name) }}" required>
             </div>
 
             <div class="form-group">
-                <label for="code">Module Code:</label>
+                <label for="code">{{ __("messages.module code") }}:</label>
                 <input type="text" name="code" id="code" class="form-control" value="{{ old('code', $module->code) }}" required maxlength="4">
             </div>
 
             <div class="form-group">
-                <label for="code">Module Hour count:</label>
-                <input type="text" name="numberhours" id="numberhours" class="form-control" value="{{ old('code', $module->numberhours) }}" required maxlength="4">
+                <label for="numberhours">{{ __("messages.module hour count") }}:</label>
+                <input type="text" name="numberhours" id="numberhours" class="form-control" value="{{ old('numberhours', $module->numberhours) }}" required maxlength="4">
             </div>
             
             <div class="form-group">
-                <label for="year">Module Year:</label>
+                <label for="year">{{ __("messages.module year") }}:</label>
                 <select name="year" id="year" class="form-control" required>
-                    <option value="1">Year 1</option>
-                    <option value="2">Year 2</option>
+                    <option value="1" {{ $module->year == 1 ? 'selected' : '' }}>Year 1</option>
+                    <option value="2" {{ $module->year == 2 ? 'selected' : '' }}>Year 2</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Update Module</button>
-                <a href="{{ redirect('/admin/modules')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">{{ __("messages.update module") }}</button>
+                <a href="{{ redirect('/admin/modules')->getTargetUrl() }}" class="btn btn-secondary">{{ __("messages.cancel") }}</a>
             </div>
         </form>
     </div>

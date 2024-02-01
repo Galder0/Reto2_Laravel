@@ -14,31 +14,31 @@
             @csrf
 
             <div class="form-group">
-                <label for="name">Module Name:</label>
+                <label for="name">{{ __("messages.module name") }}:</label>
                 <input type="text" name="name" id="name" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="code">Module Code:</label>
+                <label for="code">{{ __("messages.module code") }}:</label>
                 <input type="text" name="code" id="code" class="form-control" required maxlength="4">
             </div>
 
             <div class="form-group">
-                <label for="code">Module Number of Hours:</label>
-                <input type="text" name="numberhours" id="numberhours" class="form-control" required minlenght="1" maxlength="3">
+                <label for="numberhours">{{ __("messages.module number of hours") }}:</label>
+                <input type="text" name="numberhours" id="numberhours" class="form-control" required minlength="1" maxlength="3">
             </div>
 
             <div class="form-group">
-                <label for="year">Module Year:</label>
+                <label for="year">{{ __("messages.module year") }}:</label>
                 <select name="year" id="year" class="form-control" required>
-                    <option value="1">Year 1</option>
-                    <option value="2">Year 2</option>
+                    <option value="1">{{ __("messages.year 1") }}</option>
+                    <option value="2">{{ __("messages.year 2") }}</option>
                 </select>
             </div>
 
             <!-- Add other form fields as needed -->
 
-            <button type="submit" class="btn btn-primary">Create Module</button>
+            <button type="submit" class="btn btn-primary">{{ __("messages.create module") }}</button>
         </form>
     </div>
 @endsection

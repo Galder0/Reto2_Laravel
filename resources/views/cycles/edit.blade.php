@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Edit Cycle</h2>
+        <h2>{{ __("messages.edit cycle") }}</h2>
 
         @if(session('success'))
             <div class="alert alert-success">
@@ -25,17 +25,17 @@
             @method('PUT')
 
             <div class="form-group">
-                <label for="name">Cycle Name:</label>
+                <label for="name">{{ __("messages.cycle name") }}:</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $cycle->name) }}" required>
             </div>
 
             <div class="form-group">
-                <label for="code">Cycle Code:</label>
+                <label for="code">{{ __("messages.cycle code") }}:</label>
                 <input type="text" name="code" id="code" class="form-control" value="{{ old('code', $cycle->code) }}" required maxlength="4">
             </div>
 
             <div class="form-group">
-                <label>Modules:</label>
+                <label>{{ __("messages.modules") }}:</label>
                 @foreach ($modules as $module)
                     <div class="form-check">
                         <input type="checkbox" name="modules[]" value="{{ $module->id }}" {{ in_array($module->id, $cycle->modules->pluck('id')->toArray()) ? 'checked' : '' }}>
@@ -46,7 +46,7 @@
             </div>
 
             <div class="form-group">
-                <label for="department_id">Department:</label>
+                <label for="department_id">{{ __("messages.department") }}:</label>
                 <select name="department_id" id="department_id" class="form-control" required>
                     @foreach ($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -58,8 +58,8 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Update Cycle</button>
-                <a href="{{ redirect('/admin/index')->getTargetUrl() }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">{{ __("messages.update cycle") }}</button>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __("messages.cancel") }}</a>
             </div>
         </form>
     </div>
