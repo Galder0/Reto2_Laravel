@@ -82,6 +82,12 @@ class HomeController extends Controller
                     // Agregar profesores a la colección $moduleProfessors solo si no están ya presentes
                     $moduleProfessors = $moduleProfessors->merge($professors->diff($moduleProfessors));
                 }
+                
+            }
+            if ($moduleProfessors->isEmpty()) {
+                // You can add logic here to handle this case
+                $noModulesMessage = 'You have no modules and professors associated.';
+                return view('home', compact('noModulesMessage'));
             }
 
             // Ordenar los ciclos formativos del usuario de más nuevo a más antiguo

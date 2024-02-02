@@ -72,42 +72,36 @@ class UserController extends Controller
     public function assingCycles(Request $request, User $user)
     {
         // Validate the form data
-        $request->validate([
-            'cycles' => 'array', // Allow null or array
-        ]);
+    $request->validate([
+        'cycles' => 'array', // Allow null or array
+    ]);
 
-        DB::transaction(function () use ($request, $user) {
-            // Get selected cycles from the form
-            $cycles = $request->input('cycles');
+    DB::transaction(function () use ($request, $user) {
+        // Get selected cycles from the form
+        $cycles = $request->input('cycles');
 
-            // Remove existing data if no cycles are selected
-            if ($cycles === null) {
-                $user->modules()->detach();
-            } else {
-                // Loop through each selected cycle
-                foreach ($cycles as $cycle) {
-                    // Get all module IDs associated with the selected cycle
-                    $moduleIds = DB::table('cycles_modules')
-                        ->where('cycle_id', $cycle)
-                        ->pluck('module_id');
+        // Loop through each selected cycle
+        foreach ($cycles as $cycle) {
+            // Get all module IDs associated with the selected cycle
+            $moduleIds = DB::table('cycles_modules')
+                ->where('cycle_id', $cycle)
+                ->pluck('module_id');
 
-                    // Sync user with modules and set the cycle_id pivot value
-                    $syncData = [];
-                    foreach ($moduleIds as $moduleId) {
-                        $syncData[$moduleId] = [
-                            'cycle_id' => $cycle,
-                            'created_at' => now(),
-                        ];
-                        
-                    }
-
-                    $user->modules()->sync($syncData);
-                }
+            // Sync user with modules and set the cycle_id pivot value
+            $syncData = [];
+            foreach ($moduleIds as $moduleId) {
+                $syncData[$moduleId] = [
+                    'cycle_id' => $cycle,
+                    'created_at' => now(),
+                ];
             }
-        });
-    
-        return redirect('/admin')->with('success', 'Cycles and Modules assigned successfully.');
-    }
+
+            $user->modules()->syncWithoutDetaching($syncData);
+        }
+    });
+
+    return redirect('/admin')->with('success', 'Cycles and Modules assigned successfully.');
+}
 
     public function assignModulesForm(User $user)
 {
@@ -163,6 +157,10 @@ public function assignModules(Request $request, User $user)
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'surnames' => 'required|string|max:255',
+        'DNI' => 'string|max:9',
+        'direction' => 'string|max:255',
+        'phone_number' => 'required|string|max:20',
         'roles' => 'required|array',
         'department' => 'nullable|exists:departments,id',
         'cycles' => 'array',
@@ -173,6 +171,10 @@ public function assignModules(Request $request, User $user)
         // Update user details
         $user->update([
             'name' => $request->input('name'),
+            'surnames' => $request->input('surnames'),
+            'direction' => $request->input('direction'),
+            'phone_number' => $request->input('phone_number'),
+            'DNI' => $request->input('DNI'),
             'email' => $request->input('email'),
         ]);
 
@@ -193,10 +195,22 @@ public function assignModules(Request $request, User $user)
     return redirect('/admin')->with('success', 'User updated successfully.');
 }
     
-    public function show(User $user)
-    {
-        return view('users.show', compact('user'));
-    }
+public function show($id)
+{
+    // Get the user by ID
+    $user = User::findOrFail($id);
+
+    // Get the department (if available)
+    $department = $user->department;
+
+    // Get the modules associated with the user
+    $modules = $user->modules;
+
+    // Get the cycles associated with the user
+    $cycles = $user->cycles;
+
+    return view('users.show', compact('user', 'department', 'modules', 'cycles'));
+}
 
     public function create(User $user)
 {
@@ -251,15 +265,18 @@ public function store(Request $request)
     // Validate the request data
     $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
+        'surnames' => 'required|string|max:255', // Add validation for surnames
+        'DNI' => 'string|max:9',
+        'direction' => 'string|max:255',
+        'fct_dual' => 'boolean',
         'email' => 'required|email|unique:users,email|max:255',
-        'phone_number' => 'required|string|max:20', // Add validation for phone_number
+        'phone_number' => 'required|string|max:20',
         'roles' => 'required|array',
-        'department' => 'required_if:roles,student|exists:departments,id',
-        'cycles' => 'array',
-        'modules' => 'array', // Add validation for modules
+        'department' => [
+            'required_if:roles.*,!student'
+        ],
     ]);
-    
-    
+
     if ($validator->fails()) {
         return redirect('/admin')
             ->withErrors($validator)
@@ -271,6 +288,10 @@ public function store(Request $request)
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'surnames' => $request->input('surnames'), 
+            'DNI' => $request->input('DNI'),
+            'fct_dual' => $request->input('fct_dual', false), // Use default value 'false' if not provided
+            'direction' => $request->input('direction'),
             'phone_number' => $request->input('phone_number'), // Add phone_number field
             'password' => Hash::make('12341234'),
         ]);
@@ -288,8 +309,6 @@ public function store(Request $request)
 
         // Associate the selected department with the user if provided
         $user->department()->associate($request->input('department'));
-
-        $user->fct_dual = $request->input('fct_dual', false);
 
         $user->save();
     });

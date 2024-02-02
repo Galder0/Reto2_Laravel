@@ -6,12 +6,17 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('language/{locale}', function ($locale) {
     app()->setLocale($locale);
     session()->put('locale', $locale);
     return redirect()->back();
 })->name('set_language');
+
+Route::get('/', function () {
+    return redirect('/home');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->middleware(['admin'])->group(function () {
@@ -87,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route::get('/locale/{locale}', function (string $locale) {
 //     if (! in_array($locale, ['en', 'es', 'eus'])) {

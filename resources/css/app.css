@@ -159,3 +159,7 @@ td a#link{
         margin: 5px;
     }
 }
+.nav-link.active {
+    font-weight: bold;
+    /* Add any other styling you want for the active link */
+}

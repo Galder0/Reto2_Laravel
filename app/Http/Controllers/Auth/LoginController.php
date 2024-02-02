@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
@@ -17,7 +19,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function authenticated($request, $user)
+    protected function authenticated(Request $request, $user)
     {
         // Check if the user has the 'admin' role
         if ($user->hasRole('admin')) {
@@ -26,5 +28,10 @@ class LoginController extends Controller
 
         // Redirect to the default home page
         return redirect($this->redirectTo);
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        return redirect('/login');
     }
 }

@@ -54,8 +54,8 @@
                             <input type="checkbox" name="fct_dual" id="fct_dual" class="form-check-input" value="1" {{ old('fct_dual') ? 'checked' : '' }}>
                             <label for="fct_dual" class="form-check-label">@lang('fct dual')</label>
                         </div>
+                        <input type="hidden" name="fct_dual" value="0"> <!-- Hidden input to ensure '0' is sent if checkbox is unchecked -->
                     </div>
-
                     <hr>
 
                     <div class="form-group">
@@ -91,3 +91,4 @@
         </div>
     </div>
 </div>
+

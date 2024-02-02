@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.3/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .nav-link.active {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body style="display: none;" class="preload">
@@ -26,13 +31,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/users') }}">{{ __('messages.personal') }}</a>
+                            <a class="nav-link <?php echo request()->is('users') ? 'active' : ''; ?>" href="{{ url('/users') }}">
+                                {{ __('messages.personal') }}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/departments') }}">{{ __('messages.departments') }}</a>
+                            <a class="nav-link <?php echo request()->is('departments') ? 'active' : ''; ?>" href="{{ url('/departments') }}">
+                                {{ __('messages.departments') }}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/cycles') }}">{{ __('messages.cycles') }}</a>
+                            <a class="nav-link <?php echo request()->is('cycles') ? 'active' : ''; ?>" href="{{ url('/cycles') }}">
+                                {{ __('messages.cycles') }}
+                            </a>
                         </li>
                     </ul>
 
@@ -43,11 +54,7 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                             </li>
                         @endif
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('messages.register') }}</a>
-                            </li>
-                        @endif
+                        
                     @else
                         <!-- Authenticated Links -->
                         <li class="nav-item dropdown">
@@ -95,16 +102,24 @@
                 <ul class="nav flex-column">
                     <!-- Navbar Links -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/home') }}">{{ __('messages.home') }}</a>
+                        <a class="nav-link <?php echo request()->is('home') ? 'active' : ''; ?>" href="{{ url('/home') }}">
+                            {{ __('messages.home') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#') }}">{{ __('messages.personal') }}</a>
+                        <a class="nav-link <?php echo request()->is('users') ? 'active' : ''; ?>" href="{{ url('/users') }}">
+                            {{ __('messages.personal') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/departments') }}">{{ __('messages.departments') }}</a>
+                        <a class="nav-link <?php echo request()->is('departments') ? 'active' : ''; ?>" href="{{ url('/departments') }}">
+                            {{ __('messages.departments') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/cycles') }}">{{ __('messages.cycles') }}</a>
+                        <a class="nav-link <?php echo request()->is('cycles') ? 'active' : ''; ?>" href="{{ url('/cycles') }}">
+                            {{ __('messages.cycles') }}
+                        </a>
                     </li>
 
                     <!-- Authentication Links -->
@@ -114,11 +129,7 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                             </li>
                         @endif
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('messages.register') }}</a>
-                            </li>
-                        @endif
+                        
                     @else
                         <!-- Authenticated Links -->
                         <li class="nav-item dropdown">
@@ -154,7 +165,7 @@
 
         <div class="container-fluid">
             <!-- Page Content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <main>
                 @yield('content')
             </main>
         </div>

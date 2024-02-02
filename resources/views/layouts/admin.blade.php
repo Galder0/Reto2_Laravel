@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.3/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+    <style>
+        .nav-link.active {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body style="display: none;" class="preload">
@@ -118,6 +122,7 @@
                                 </form>
                             </div>
                         </li>
+                        
                     @endguest
                     <!-- Language Switch Dropdown -->
                     <div class="dropdown">
@@ -134,19 +139,29 @@
                     <hr>
                     <h2 class="offcanvas-title">{{__("messages.admin links")}}</h2>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin" id="dashboard-link"><i class="bi bi-house-fill"></i>{{__("messages.dashboard")}}</a>
+                        <a class="nav-link <?php echo request()->is('admin') ? 'active' : ''; ?>" href="/admin" id="dashboard-link">
+                            <i class="bi bi-house-fill"></i>{{__("messages.dashboard")}}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/roles" id="roles-link"><i class="bi bi-house-fill"></i> {{__("messages.roles")}}</a>
+                        <a class="nav-link <?php echo request()->is('admin/roles') ? 'active' : ''; ?>" href="/admin/roles">
+                            <i class="bi bi-clipboard2-fill">{{__("messages.roles")}}</i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/cycles" id="cycles-link"><i class="bi bi-house-fill"></i> {{__("messages.cycles")}}</a>
+                        <a class="nav-link <?php echo request()->is('admin/cycles') ? 'active' : ''; ?>" href="/admin/cycles">
+                            <i class="bi bi-mortarboard-fill">{{__("messages.cycles")}}</i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/departments" id="departments-link"><i class="bi bi-buildings-fill"></i> {{__("messages.departments")}}</a>
+                        <a class="nav-link <?php echo request()->is('admin/departments') ? 'active' : ''; ?>" href="/admin/departments">
+                            <i class="bi bi-buildings-fill">{{__("messages.departments")}}</i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/modules" id="modules-link"><i class="bi bi-house-fill"></i> Modules</a>
+                        <a class="nav-link <?php echo request()->is('admin/modules') ? 'active' : ''; ?>" href="/admin/modules">
+                            <i class="bi bi-book-half">{{__("messages.modules")}}</i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -158,21 +173,31 @@
                 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block shadow-sm">
                     <div class="position-sticky">
                         <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin"><i class="bi bi-house-fill">{{__("messages.dashboard")}}</i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/roles"><i class="bi bi-clipboard2-fill">{{__("messages.roles")}}</i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/cycles"><i class="bi bi-mortarboard-fill">{{__("messages.cycles")}}</i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/departments"><i class="bi bi-buildings-fill">{{__("messages.departments")}}</i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/modules"><i class="bi bi-book-half">{{__("messages.modules")}}</i></a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo request()->is('admin') ? 'active' : ''; ?>" href="/admin" id="dashboard-link">
+                                <i class="bi bi-house-fill"></i>{{__("messages.dashboard")}}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo request()->is('admin/roles') ? 'active' : ''; ?>" href="/admin/roles">
+                                <i class="bi bi-clipboard2-fill">{{__("messages.roles")}}</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo request()->is('admin/cycles') ? 'active' : ''; ?>" href="/admin/cycles">
+                                <i class="bi bi-mortarboard-fill">{{__("messages.cycles")}}</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo request()->is('admin/departments') ? 'active' : ''; ?>" href="/admin/departments">
+                                <i class="bi bi-buildings-fill">{{__("messages.departments")}}</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo request()->is('admin/modules') ? 'active' : ''; ?>" href="/admin/modules">
+                                <i class="bi bi-book-half">{{__("messages.modules")}}</i>
+                            </a>
+                        </li>
                         </ul>
                     </div>
                 </nav>
