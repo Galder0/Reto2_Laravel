@@ -160,4 +160,5 @@ return [
     'noModulesForCycle' => 'No modules for this cycle',
     'noCyclesInfo' => 'No cycles information available',
     'my mates' => 'My mates',
+    
 ];
