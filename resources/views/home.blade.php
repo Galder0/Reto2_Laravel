@@ -72,34 +72,41 @@
             </div>
             @else
                 <div class="accordion" id="cycleAccordion">
-                    @foreach ($cycles->unique() as $cycle)
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading{{ $cycle->id }}">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $cycle->id }}" aria-expanded="true" aria-controls="collapse{{ $cycle->id }}">
-                                    {{ $cycle->name }}
-                                </button>
-                            </h2>
-                            <div id="collapse{{ $cycle->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $cycle->id }}" data-bs-parent="#cycleAccordion">
-                                <div class="accordion-body">
-                                    <h3>{{ __('messages.modules') }}</h3>
-                                    @if ($modules->isEmpty())
-                                        <p>{{ __('messages.no modules available for this cycle') }}</p>
-                                    @else
-                                        <ul>
-                                            @foreach ($modules as $module)
-                                                <li>
-                                                    {{ $module->name }} -
-                                                    @foreach ($moduleProfessors->unique('id') as $professor)
-                                                        {{ __('messages.professor') }}: {{ $professor->name }} ({{ $professor->email }})
-                                                    @endforeach
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
+                    @if ($cycles != null)
+                        @foreach ($cycles->unique() as $cycle)
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ $cycle->id }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $cycle->id }}" aria-expanded="true" aria-controls="collapse{{ $cycle->id }}">
+                                        {{ $cycle->name }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ $cycle->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $cycle->id }}" data-bs-parent="#cycleAccordion">
+                                    <div class="accordion-body">
+                                        <h3>{{ __('messages.modules') }}</h3>
+                                        @if ($modules->isEmpty())
+                                            <p>{{ __('messages.no modules available for this cycle') }}</p>
+                                        @else
+                                            <ul>
+                                                @foreach ($modules as $module)
+                                                    <li>
+                                                        {{ $module->name }} -
+                                                        @foreach ($moduleProfessors->unique('id') as $professor)
+                                                            {{ __('messages.professor') }}: {{ $professor->name }} ({{ $professor->email }})
+                                                        @endforeach
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
+                        @endforeach
+                    @else
+                        <!-- Handle the case where $cycles is null -->
+                        <div class="text-center mt-4">
+                            <p>{{ __('messages.no cycles available') }}</p>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
             @endif
         @endif

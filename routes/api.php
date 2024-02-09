@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ModuleController;
 use App\Http\Controllers\API\CycleController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\PasswordResetController;
 
 Route::middleware('auth:sanctum')->get('/users', function (Request $request) {
     return $request->user();
@@ -28,6 +29,7 @@ Route::apiResources([
 Route::apiResources([
     'users' => UserController::class,
 ]);
+
 
 // Authentication routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -86,3 +88,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::resource('users', UserController::class)->only(['index', 'show'])->withoutMiddleware(['auth:sanctum']);
 Route::delete('users/{user}', [UserController::class, 'destroy'])->withoutMiddleware(['auth:sanctum']);
 Route::delete('users', [UserController::class, 'store'])->withoutMiddleware(['auth:sanctum']);
+
+// Define the route for resetting the password
+Route::post('password/reset', [PasswordResetController::class, 'resetPassword']);

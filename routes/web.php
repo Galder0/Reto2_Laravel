@@ -7,6 +7,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PasswordResetController;
 
 Route::get('language/{locale}', function ($locale) {
     app()->setLocale($locale);
@@ -62,9 +63,18 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/users/{user}/assign-modules','assignModules')->name('users.assignModules');
             Route::get('/changePassword', 'changePasswordForm')->name('changePassword.form');
             Route::post('/changePassword', 'changePassword')->name('changePassword');
+            
+            //PASSWORD RESET TRHOUGH EMAIL
+            Route::get('/forgot-password', [PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
+            Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+            Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+            Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
         })->withoutMiddleware([Auth::class]);
 
     });
+
+    Route::get('/changePassword', [UserController::class, 'changePasswordForm'])->name('changePassword.form');
+    Route::post('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
 	
         // Cycles
     Route::get('/cycles', [CycleController::class, 'index'])->name('cycles.index');
